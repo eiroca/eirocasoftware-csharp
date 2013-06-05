@@ -1,0 +1,88 @@
+﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{6CE8B4E5-93A6-422D-B1C9-25F9097D5189}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>AdvReport</RootNamespace>
+    <AssemblyName>AdvReport</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>Full</DebugType>
+    <Optimize>False</Optimize>
+    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <DebugSymbols>False</DebugSymbols>
+    <DebugType>None</DebugType>
+    <Optimize>True</Optimize>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+  <ItemGroup>
+    <Reference Include="MySql.Data" />
+    <Reference Include="PresentationFramework">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="src\AWR.cs" />
+    <Compile Include="src\BaseElement.cs" />
+    <Compile Include="src\Cache\Cache.cs" />
+    <Compile Include="src\Cache\CollectionJoinerBase.cs" />
+    <Compile Include="src\Cache\EnumeratorJoinerBase.cs" />
+    <Compile Include="src\Cache\ICache.cs" />
+    <Compile Include="src\Cache\SimpleMemoryCache.cs" />
+    <Compile Include="src\Cache\TimedCacheKey.cs" />
+    <Compile Include="src\DB\DB.cs" />
+    <Compile Include="src\DB\Token.cs">
+    </Compile>
+    <Compile Include="src\ItemType.cs" />
+    <Compile Include="src\LogCollector\DirectoryScanner.cs" />
+    <Compile Include="src\LogCollector\FileReader.cs" />
+    <Compile Include="src\LogCollector\LogCollector.cs" />
+    <Compile Include="src\LogCollector\LogCollectorConfig.cs" />
+    <Compile Include="src\LogCollector\RowProcessor.cs" />
+    <Compile Include="src\MyQueue.cs" />
+    <Compile Include="src\Piwik\Piwik.cs" />
+    <Compile Include="src\Teda\SessionFixup.cs" />
+    <Compile Include="src\Teda\SessionManager.cs" />
+    <Compile Include="src\Teda\EventProcessor.cs" />
+    <Compile Include="src\Teda\TEDA.cs" />
+    <Compile Include="src\Teda\Dispatcher.cs" />
+    <Compile Include="src\Teda\TrafficExtractor.cs" />
+    <None Include="AdvReport.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src" />
+    <Folder Include="src\LogCollector" />
+    <Folder Include="src\DB" />
+    <Folder Include="src\Cache" />
+    <Folder Include="src\Piwik" />
+    <Folder Include="src\Teda" />
+  </ItemGroup>
+</Project>

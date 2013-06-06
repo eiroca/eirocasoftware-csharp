@@ -16,7 +16,6 @@ namespace WikiHelper.lib.WikiMedia.converter {
   using System.Web;
 
   using DotNetWikiBot;
-
   using Microsoft.Office.Core;
 
   //Extract PPT with a summary taken form the document model
@@ -88,9 +87,9 @@ namespace WikiHelper.lib.WikiMedia.converter {
 
     //Generate a slide with the given header element names
     public void ExportHeaders(Presentation pres, string title, Header[] heads, string[] names, bool firstSpecial) {
-      PowerPoint.Slide slide = pres.Add(PowerPoint.PpSlideLayout.ppLayoutText, title);
-      PowerPoint.TextRange textRange;
-      PowerPoint.TextRange tr1;
+      Microsoft.Office.Interop.PowerPoint.Slide slide = pres.Add(Microsoft.Office.Interop.PowerPoint.PpSlideLayout.ppLayoutText, title);
+      Microsoft.Office.Interop.PowerPoint.TextRange textRange;
+      Microsoft.Office.Interop.PowerPoint.TextRange tr1;
       textRange = slide.Shapes[2].TextFrame.TextRange;
       for (int i=0; i<heads.Length; i++) {
         Header header = heads[i];
@@ -139,11 +138,11 @@ namespace WikiHelper.lib.WikiMedia.converter {
     #region Methods
     //Convert the first "not empty" header element in a document model into a TextRange
     //composed by an hyperlink to the page and a summary composed up to "size" charactes.
-    public void AddFirstHeader(PowerPoint.TextRange parent, Document doc, Page page, string title, int size) {
-      PowerPoint.TextRange tr1;
+    public void AddFirstHeader(Microsoft.Office.Interop.PowerPoint.TextRange parent, Document doc, Page page, string title, int size) {
+      Microsoft.Office.Interop.PowerPoint.TextRange tr1;
       tr1 = parent.InsertAfter("\r");
       tr1.IndentLevel = 1;
-      PowerPoint.Hyperlink link = tr1.ActionSettings[PowerPoint.PpMouseActivation.ppMouseClick].Hyperlink;
+      Microsoft.Office.Interop.PowerPoint.Hyperlink link = tr1.ActionSettings[Microsoft.Office.Interop.PowerPoint.PpMouseActivation.ppMouseClick].Hyperlink;
       link.Address = wiki.site.site + wiki.site.indexPath + "index.php?title=" + HttpUtility.UrlEncode(page.title);
       link.TextToDisplay = title;
       tr1.InsertAfter(". ");
@@ -159,8 +158,8 @@ namespace WikiHelper.lib.WikiMedia.converter {
     }
 
     //Convert an header element into PowerPoint TextRage
-    public void AddHeader(PowerPoint.TextRange parent, Header header, bool firstSpecial, int maxElems) {
-      PowerPoint.TextRange tr = null;
+    public void AddHeader(Microsoft.Office.Interop.PowerPoint.TextRange parent, Header header, bool firstSpecial, int maxElems) {
+      Microsoft.Office.Interop.PowerPoint.TextRange tr = null;
       if ( (maxElems<1) || (maxElems>header.elements.Count) ) {
         maxElems = header.elements.Count;
       }
@@ -192,7 +191,7 @@ namespace WikiHelper.lib.WikiMedia.converter {
                 tr=parent;
               }
               tr = tr.InsertAfter(" ");
-              PowerPoint.Hyperlink l = tr.ActionSettings[PowerPoint.PpMouseActivation.ppMouseClick].Hyperlink;
+              Microsoft.Office.Interop.PowerPoint.Hyperlink l = tr.ActionSettings[Microsoft.Office.Interop.PowerPoint.PpMouseActivation.ppMouseClick].Hyperlink;
               string url = link.URL;
               if (url!= null) {
                 if ((!url.StartsWith("http:")) || (!url.StartsWith("mailto:"))) {
@@ -231,7 +230,7 @@ namespace WikiHelper.lib.WikiMedia.converter {
     }
 
     //Try to preserve Text element formatting into the PowerPoint TextRange
-    public void CopyFormatting(Text t, PowerPoint.TextRange tr) {
+    public void CopyFormatting(Text t, Microsoft.Office.Interop.PowerPoint.TextRange tr) {
       if (t.bold) {
         tr.Font.Bold = MsoTriState.msoTrue;
       }
@@ -256,8 +255,8 @@ namespace WikiHelper.lib.WikiMedia.converter {
     //will contain up to expPagining summaries. A summary will be composed up to
     //descSize characters taken from the first Header of the Page
     public void ExportIndex(string expCat, string outFileName, int expPaging, int descSize, WikiMedia.ExportNotify expNotify) {
-      PowerPoint.Slide slide = null;
-      PowerPoint.TextRange textRange = null;
+      Microsoft.Office.Interop.PowerPoint.Slide slide = null;
+      Microsoft.Office.Interop.PowerPoint.TextRange textRange = null;
       Presentation pres = new Presentation(fTemplatePath);
       PageList pl = wiki.GetPages(expCat);
       int cnt = 0;
@@ -268,7 +267,7 @@ namespace WikiHelper.lib.WikiMedia.converter {
         }
         cnt++;
         if ((cnt % expPaging) == 1) {
-          slide = pres.Add(PowerPoint.PpSlideLayout.ppLayoutText, GetTitleName(expCat));
+          slide = pres.Add(Microsoft.Office.Interop.PowerPoint.PpSlideLayout.ppLayoutText, GetTitleName(expCat));
           textRange = slide.Shapes[2].TextFrame.TextRange;
         }
         if (expNotify!=null) {
@@ -444,10 +443,10 @@ namespace WikiHelper.lib.WikiMedia.converter {
     //Create slides with the index of all the pages in a wiki category
     //Pages will be subdivided into two columns and paged in pageSize elements per page
     public void Index2Slide(Presentation pres, PageList pl, string indexName, int pageSize) {
-      PowerPoint.Slide idexSlide;
-      PowerPoint.TextRange index1 = null;
-      PowerPoint.TextRange index2 = null;
-      PowerPoint.TextRange index  = null;
+      Microsoft.Office.Interop.PowerPoint.Slide idexSlide;
+      Microsoft.Office.Interop.PowerPoint.TextRange index1 = null;
+      Microsoft.Office.Interop.PowerPoint.TextRange index2 = null;
+      Microsoft.Office.Interop.PowerPoint.TextRange index  = null;
       int cnt = 0;
       bool first = true;
    		foreach(Page page in pl) {
@@ -456,7 +455,7 @@ namespace WikiHelper.lib.WikiMedia.converter {
           continue;
         }
         if ((cnt % pageSize) == 0) {
-          idexSlide = pres.Add(PowerPoint.PpSlideLayout.ppLayoutTwoColumnText, indexName);
+          idexSlide = pres.Add(Microsoft.Office.Interop.PowerPoint.PpSlideLayout.ppLayoutTwoColumnText, indexName);
           index1 = idexSlide.Shapes[2].TextFrame.TextRange;
           index2 = idexSlide.Shapes[3].TextFrame.TextRange;
           first = true;
@@ -504,16 +503,16 @@ namespace WikiHelper.lib.WikiMedia.converter {
     // Converts a wiki page into a set of slide (one for each header)
     // Exclude header that have only a sentence presente in SKIPS
     public void Page2Slide(Presentation pres, Document doc, string title, bool skipEmpty) {
-      PowerPoint.Slide slide;
-      PowerPoint.TextRange tr;
-  	  slide = pres.Add(PowerPoint.PpSlideLayout.ppLayoutTitle, title);
+      Microsoft.Office.Interop.PowerPoint.Slide slide;
+      Microsoft.Office.Interop.PowerPoint.TextRange tr;
+  	  slide = pres.Add(Microsoft.Office.Interop.PowerPoint.PpSlideLayout.ppLayoutTitle, title);
       foreach (Header header in doc.headers) {
  		    if (skipEmpty) {
  		      if (IsEmptyHeader(header)) {
  		        continue;
  		      }
  		    }
- 		    slide = pres.Add(PowerPoint.PpSlideLayout.ppLayoutText, header.name);
+ 		    slide = pres.Add(Microsoft.Office.Interop.PowerPoint.PpSlideLayout.ppLayoutText, header.name);
         tr = slide.Shapes[2].TextFrame.TextRange;
         AddHeader(tr, header, true, 0);
       }

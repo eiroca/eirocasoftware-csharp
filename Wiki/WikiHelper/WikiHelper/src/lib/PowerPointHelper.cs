@@ -12,19 +12,18 @@
 namespace WikiHelper {
   using System;
 
+  using Microsoft.Office.Interop;
   using Microsoft.Office.Core;
-
-  using PowerPoint;
-
+  
   public class Presentation {
     
     #region Fields
     public const string SEP = "\r";
-    static PowerPoint.Application powerpoint;
-    static PowerPoint.Presentations presentationSet;
+    static Microsoft.Office.Interop.PowerPoint.Application powerpoint;
+    static Microsoft.Office.Interop.PowerPoint.Presentations presentationSet;
     bool bAssistantOn;
-    PowerPoint.Presentation presentation;
-    PowerPoint.Slides slides;
+    Microsoft.Office.Interop.PowerPoint.Presentation presentation;
+    Microsoft.Office.Interop.PowerPoint.Slides slides;
     #endregion Fields
 
     #region Constructors
@@ -38,13 +37,13 @@ namespace WikiHelper {
     #endregion Constructors
 
     #region Methods
-    public PowerPoint.Slide Add(string title) {
-      return Add(PowerPoint.PpSlideLayout.ppLayoutTitleOnly, title);
+    public Microsoft.Office.Interop.PowerPoint.Slide Add(string title) {
+      return Add(Microsoft.Office.Interop.PowerPoint.PpSlideLayout.ppLayoutTitleOnly, title);
     }
 
-    public PowerPoint.Slide Add(PowerPoint.PpSlideLayout layout, string title) {
-      PowerPoint.Slide slide;
-      PowerPoint.TextRange textRange;
+    public Microsoft.Office.Interop.PowerPoint.Slide Add(Microsoft.Office.Interop.PowerPoint.PpSlideLayout layout, string title) {
+      Microsoft.Office.Interop.PowerPoint.Slide slide;
+      Microsoft.Office.Interop.PowerPoint.TextRange textRange;
       slide = slides.Add(slides.Count+1, layout);
       textRange = slide.Shapes[1].TextFrame.TextRange;
       textRange.Text = title;
@@ -82,7 +81,7 @@ namespace WikiHelper {
     }
 
     public void OpenPowerPoint() {
-      powerpoint = new PowerPoint.Application();
+      powerpoint = new Microsoft.Office.Interop.PowerPoint.Application();
       powerpoint.Visible = MsoTriState.msoTrue;
       //Prevent Office Assistant from displaying alert messages:
       bAssistantOn = powerpoint.Assistant.On;
@@ -91,7 +90,7 @@ namespace WikiHelper {
     }
 
     public void Save(string path) {
-      presentation.SaveAs(path, PpSaveAsFileType.ppSaveAsPresentation, Microsoft.Office.Core.MsoTriState.msoFalse);
+      presentation.SaveAs(path, Microsoft.Office.Interop.PowerPoint.PpSaveAsFileType.ppSaveAsPresentation, Microsoft.Office.Core.MsoTriState.msoFalse);
     }
     #endregion Methods
     

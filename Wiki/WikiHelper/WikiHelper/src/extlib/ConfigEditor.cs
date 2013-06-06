@@ -274,133 +274,133 @@ namespace DotBits.Configuration {
     /// the contents of this method with the code editor.
     /// </summary>
     private void InitializeComponent() {
-      System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfigEditor));
-      this.btnSave = new System.Windows.Forms.Button();
-      this.btnClose = new System.Windows.Forms.Button();
-      this.txtConfigurationFile = new System.Windows.Forms.TextBox();
-      this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
-      this.btnLoad = new System.Windows.Forms.Button();
-      this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-      this.groupBox1 = new System.Windows.Forms.GroupBox();
-      this.pictureBox1 = new System.Windows.Forms.PictureBox();
-      this.lblTitle = new System.Windows.Forms.Label();
-      this.groupBox1.SuspendLayout();
-      ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-      this.SuspendLayout();
-      //
-      // btnSave
-      //
-      this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-      this.btnSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.btnSave.Location = new System.Drawing.Point(461, 385);
-      this.btnSave.Name = "btnSave";
-      this.btnSave.Size = new System.Drawing.Size(120, 24);
-      this.btnSave.TabIndex = 1;
-      this.btnSave.Text = "&Save Settings";
-      this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-      //
-      // btnClose
-      //
-      this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-      this.btnClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-      this.btnClose.Location = new System.Drawing.Point(589, 385);
-      this.btnClose.Name = "btnClose";
-      this.btnClose.Size = new System.Drawing.Size(64, 24);
-      this.btnClose.TabIndex = 2;
-      this.btnClose.Text = "&Done";
-      this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
-      //
-      // txtConfigurationFile
-      //
-      this.txtConfigurationFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-      | System.Windows.Forms.AnchorStyles.Right)));
-      this.txtConfigurationFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.txtConfigurationFile.Location = new System.Drawing.Point(7, 353);
-      this.txtConfigurationFile.Name = "txtConfigurationFile";
-      this.txtConfigurationFile.ReadOnly = true;
-      this.txtConfigurationFile.Size = new System.Drawing.Size(614, 20);
-      this.txtConfigurationFile.TabIndex = 16;
-      //
-      // propertyGrid1
-      //
-      this.propertyGrid1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-      | System.Windows.Forms.AnchorStyles.Right)));
-      this.propertyGrid1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.propertyGrid1.LineColor = System.Drawing.SystemColors.ScrollBar;
-      this.propertyGrid1.Location = new System.Drawing.Point(7, 49);
-      this.propertyGrid1.Name = "propertyGrid1";
-      this.propertyGrid1.PropertySort = System.Windows.Forms.PropertySort.Categorized;
-      this.propertyGrid1.Size = new System.Drawing.Size(646, 296);
-      this.propertyGrid1.TabIndex = 0;
-      this.propertyGrid1.ToolbarVisible = false;
-      this.propertyGrid1.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.propertyGrid1_PropertyValueChanged);
-      //
-      // btnLoad
-      //
-      this.btnLoad.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-      this.btnLoad.Location = new System.Drawing.Point(629, 353);
-      this.btnLoad.Name = "btnLoad";
-      this.btnLoad.Size = new System.Drawing.Size(24, 20);
-      this.btnLoad.TabIndex = 17;
-      this.btnLoad.Text = "...";
-      this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
-      //
-      // groupBox1
-      //
-      this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-      | System.Windows.Forms.AnchorStyles.Right)));
-      this.groupBox1.BackColor = System.Drawing.Color.White;
-      this.groupBox1.Controls.Add(this.pictureBox1);
-      this.groupBox1.Controls.Add(this.lblTitle);
-      this.groupBox1.Location = new System.Drawing.Point(-16, -24);
-      this.groupBox1.Name = "groupBox1";
-      this.groupBox1.Size = new System.Drawing.Size(692, 66);
-      this.groupBox1.TabIndex = 18;
-      this.groupBox1.TabStop = false;
-      //
-      // pictureBox1
-      //
-      this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-      this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-      this.pictureBox1.Location = new System.Drawing.Point(636, 28);
-      this.pictureBox1.Name = "pictureBox1";
-      this.pictureBox1.Size = new System.Drawing.Size(48, 31);
-      this.pictureBox1.TabIndex = 1;
-      this.pictureBox1.TabStop = false;
-      //
-      // lblTitle
-      //
-      this.lblTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.lblTitle.Location = new System.Drawing.Point(32, 29);
-      this.lblTitle.Name = "lblTitle";
-      this.lblTitle.Size = new System.Drawing.Size(272, 29);
-      this.lblTitle.TabIndex = 0;
-      this.lblTitle.Text = "Application Settings";
-      //
-      // ConfigEditor
-      //
-      this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-      this.ClientSize = new System.Drawing.Size(662, 416);
-      this.Controls.Add(this.groupBox1);
-      this.Controls.Add(this.btnLoad);
-      this.Controls.Add(this.propertyGrid1);
-      this.Controls.Add(this.txtConfigurationFile);
-      this.Controls.Add(this.btnClose);
-      this.Controls.Add(this.btnSave);
-      this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-      this.MaximizeBox = false;
-      this.MinimumSize = new System.Drawing.Size(670, 450);
-      this.Name = "ConfigEditor";
-      this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-      this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-      this.Text = "Application Configuration";
-      this.Load += new System.EventHandler(this.ConfigEditor_Load);
-      this.groupBox1.ResumeLayout(false);
-      ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-      this.ResumeLayout(false);
-      this.PerformLayout();
+    	System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfigEditor));
+    	this.btnSave = new System.Windows.Forms.Button();
+    	this.btnClose = new System.Windows.Forms.Button();
+    	this.txtConfigurationFile = new System.Windows.Forms.TextBox();
+    	this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
+    	this.btnLoad = new System.Windows.Forms.Button();
+    	this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+    	this.groupBox1 = new System.Windows.Forms.GroupBox();
+    	this.pictureBox1 = new System.Windows.Forms.PictureBox();
+    	this.lblTitle = new System.Windows.Forms.Label();
+    	this.groupBox1.SuspendLayout();
+    	((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+    	this.SuspendLayout();
+    	// 
+    	// btnSave
+    	// 
+    	this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+    	this.btnSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+    	this.btnSave.Location = new System.Drawing.Point(461, 385);
+    	this.btnSave.Name = "btnSave";
+    	this.btnSave.Size = new System.Drawing.Size(120, 24);
+    	this.btnSave.TabIndex = 1;
+    	this.btnSave.Text = "&Save Settings";
+    	this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+    	// 
+    	// btnClose
+    	// 
+    	this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+    	this.btnClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+    	this.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+    	this.btnClose.Location = new System.Drawing.Point(589, 385);
+    	this.btnClose.Name = "btnClose";
+    	this.btnClose.Size = new System.Drawing.Size(64, 24);
+    	this.btnClose.TabIndex = 2;
+    	this.btnClose.Text = "&Done";
+    	this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+    	// 
+    	// txtConfigurationFile
+    	// 
+    	this.txtConfigurationFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+    	    	    	| System.Windows.Forms.AnchorStyles.Right)));
+    	this.txtConfigurationFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+    	this.txtConfigurationFile.Location = new System.Drawing.Point(7, 353);
+    	this.txtConfigurationFile.Name = "txtConfigurationFile";
+    	this.txtConfigurationFile.ReadOnly = true;
+    	this.txtConfigurationFile.Size = new System.Drawing.Size(614, 20);
+    	this.txtConfigurationFile.TabIndex = 16;
+    	// 
+    	// propertyGrid1
+    	// 
+    	this.propertyGrid1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+    	    	    	| System.Windows.Forms.AnchorStyles.Right)));
+    	this.propertyGrid1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+    	this.propertyGrid1.LineColor = System.Drawing.SystemColors.ScrollBar;
+    	this.propertyGrid1.Location = new System.Drawing.Point(7, 49);
+    	this.propertyGrid1.Name = "propertyGrid1";
+    	this.propertyGrid1.PropertySort = System.Windows.Forms.PropertySort.Categorized;
+    	this.propertyGrid1.Size = new System.Drawing.Size(646, 296);
+    	this.propertyGrid1.TabIndex = 0;
+    	this.propertyGrid1.ToolbarVisible = false;
+    	this.propertyGrid1.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.propertyGrid1_PropertyValueChanged);
+    	// 
+    	// btnLoad
+    	// 
+    	this.btnLoad.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+    	this.btnLoad.Location = new System.Drawing.Point(629, 353);
+    	this.btnLoad.Name = "btnLoad";
+    	this.btnLoad.Size = new System.Drawing.Size(24, 20);
+    	this.btnLoad.TabIndex = 17;
+    	this.btnLoad.Text = "...";
+    	this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
+    	// 
+    	// groupBox1
+    	// 
+    	this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+    	    	    	| System.Windows.Forms.AnchorStyles.Right)));
+    	this.groupBox1.BackColor = System.Drawing.Color.White;
+    	this.groupBox1.Controls.Add(this.pictureBox1);
+    	this.groupBox1.Controls.Add(this.lblTitle);
+    	this.groupBox1.Location = new System.Drawing.Point(-16, -24);
+    	this.groupBox1.Name = "groupBox1";
+    	this.groupBox1.Size = new System.Drawing.Size(692, 66);
+    	this.groupBox1.TabIndex = 18;
+    	this.groupBox1.TabStop = false;
+    	// 
+    	// pictureBox1
+    	// 
+    	this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+    	this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+    	this.pictureBox1.Location = new System.Drawing.Point(636, 28);
+    	this.pictureBox1.Name = "pictureBox1";
+    	this.pictureBox1.Size = new System.Drawing.Size(48, 31);
+    	this.pictureBox1.TabIndex = 1;
+    	this.pictureBox1.TabStop = false;
+    	// 
+    	// lblTitle
+    	// 
+    	this.lblTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+    	this.lblTitle.Location = new System.Drawing.Point(32, 29);
+    	this.lblTitle.Name = "lblTitle";
+    	this.lblTitle.Size = new System.Drawing.Size(272, 29);
+    	this.lblTitle.TabIndex = 0;
+    	this.lblTitle.Text = "Application Settings";
+    	// 
+    	// ConfigEditor
+    	// 
+    	this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
+    	this.ClientSize = new System.Drawing.Size(662, 416);
+    	this.Controls.Add(this.groupBox1);
+    	this.Controls.Add(this.btnLoad);
+    	this.Controls.Add(this.propertyGrid1);
+    	this.Controls.Add(this.txtConfigurationFile);
+    	this.Controls.Add(this.btnClose);
+    	this.Controls.Add(this.btnSave);
+    	this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+    	this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+    	this.MaximizeBox = false;
+    	this.MinimumSize = new System.Drawing.Size(670, 450);
+    	this.Name = "ConfigEditor";
+    	this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+    	this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+    	this.Text = "Application Configuration";
+    	this.Load += new System.EventHandler(this.ConfigEditor_Load);
+    	this.groupBox1.ResumeLayout(false);
+    	((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+    	this.ResumeLayout(false);
+    	this.PerformLayout();
     }
 
     /// <summary>

@@ -57,7 +57,7 @@ namespace WikiHelper {
     }
 
     public string PathReplaces {
-      get { return GetPath("PathReplaces", "data\replaces.txt"); }
+      get { return GetPath("PathReplaces", "data\\replaces.txt"); }
     }
 
     public string PathAlias {

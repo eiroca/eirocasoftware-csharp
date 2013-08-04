@@ -602,7 +602,7 @@ namespace Foxoft.Ci {
 
 		public string BlockOpenStr = "{";
 		public string BlockCloseStr = "}";
-		public string IdentStr = "\t";
+		public string IdentStr = "  ";
 		public string NewLineStr = "\r\n";
 		
 		protected override void Write(string s) {
@@ -855,14 +855,8 @@ namespace Foxoft.Ci {
 		}
 		
 		public void WriteEnums(CiProgram prog) {
-			bool first = true;
 			foreach (CiSymbol symbol in prog.Globals) {
 				if (symbol is CiEnum) {
-					if (first) {
-						WriteLine();
-						WriteLine("type");
-						first = false;
-					}
 					symbol.Accept(this);
 				}
 			}
@@ -870,7 +864,6 @@ namespace Foxoft.Ci {
 
 		public void WriteClassInterface(CiClass klass) {
 			WriteLine();
-			OpenBlock(false);
 			Write(klass.Documentation);
 			WriteName(klass);
 			Write(" = ");
@@ -895,8 +888,7 @@ namespace Foxoft.Ci {
 				}
 			}
 			CloseBlock(false);
-			WriteLine("end");
-			CloseBlock(false);
+			WriteLine("end;");
 		}
 		
 		public void WriteClassImplementation(CiClass klass) {
@@ -913,8 +905,6 @@ namespace Foxoft.Ci {
 		}
 		
 		public void WriteClassesInterface(CiProgram prog) {
-			WriteLine();
-			WriteLine("type");
 			var delegates = prog.Globals.Where(s => s is CiDelegate);
 			if (delegates.Count()>0) {
 				WriteLine();
@@ -926,15 +916,9 @@ namespace Foxoft.Ci {
 				}
 				CloseBlock(false);
 			}
-			bool first = true;
 			foreach (CiClass klass in ClassOrder.GetList()) {
-				if (!first) {
-					WriteLine(";");
-				}
 				WriteClassInterface(klass);
-				first = false;
 			}
-			WriteLine(";");
 		}
 		
 		public void WriteClassesImplementation() {
@@ -951,28 +935,19 @@ namespace Foxoft.Ci {
 		}
 
 		public void WriteSuperTypes() {
-			bool first = true;
+			bool sep = false;
 			foreach (CiClass klass in SuperType.GetClassList()) {
-				if (first) {
+				if (!sep) {
 					WriteLine();
-					WriteLine("type");
-					OpenBlock(false);
-					first = false;
+					sep = true;
 				}
 				WriteName(klass);
 				WriteLine(" = class;");
 			}
-			bool sep = !first;
 			HashSet<string>types = new HashSet<string>();
 			foreach (CiType t in SuperType.GetTypeList()) {
 				TypeMappingInfo info = SuperType.GetTypeInfo(t);
 				if (!info.Native) {
-					if (first) {
-						WriteLine();
-						WriteLine("type");
-						OpenBlock(false);
-						first = false;
-					}
 					if (sep) {
 						sep = false;
 						WriteLine();
@@ -985,9 +960,6 @@ namespace Foxoft.Ci {
 						WriteLine(";");
 					}
 				}
-			}
-			if (!first) {
-				CloseBlock(false);
 			}
 		}
 		
@@ -1009,11 +981,11 @@ namespace Foxoft.Ci {
 						Write("var ");
 						Write(info.Null);
 						Write(": ");
-						Write(info.Definition);
+						Write(info.Name);
 						WriteLine(";");
-						WriteLine("procedure __CCLEAR(var x: "+info.Name+"); var i: integer; begin for i:= low(x) to high(x) do x[i]:= "+info.ItemDefault+"; end;");
-						WriteLine("procedure __CFILL (var x: "+info.Name+"; v: "+info.ItemType+"); var i: integer; begin for i:= low(x) to high(x) do x[i]:= v; end;");
-						WriteLine("procedure __CCOPY (const source: "+info.Name+"; sourceStart: integer; var dest: "+info.Name+"; destStart: integer; len: integer); var i: integer; begin for i:= 0 to len do dest[i+destStart]:= source[i+sourceStart]; end;");
+						WriteLine("procedure __CCLEAR(var x: "+info.Name+"); overload; var i: integer; begin for i:= low(x) to high(x) do x[i]:= "+info.ItemDefault+"; end;");
+						WriteLine("procedure __CFILL (var x: "+info.Name+"; v: "+info.ItemType+"); overload; var i: integer; begin for i:= low(x) to high(x) do x[i]:= v; end;");
+						WriteLine("procedure __CCOPY (const source: "+info.Name+"; sourceStart: integer; var dest: "+info.Name+"; destStart: integer; len: integer); overload; var i: integer; begin for i:= 0 to len do dest[i+destStart]:= source[i+sourceStart]; end;");
 						if ((info.ItemType!=null) && (info.ItemType.Equals("byte"))) {
 							getResProc = true;
 						}
@@ -1044,10 +1016,14 @@ function  __getMagic(const cond: array of boolean): integer; var i: integer; var
 			WriteLine("unit "+this.Namespace+";");
 			// Declaration
 			WriteInterfaceHeader();
+			WriteLine();
+			WriteLine("type");
+			OpenBlock(false);
 			WriteEnums(prog);
 			WriteSuperTypes();
-			WriteConstants(prog);
 			WriteClassesInterface(prog);
+			CloseBlock(false);
+			WriteConstants(prog);
 			// Implementation
 			WriteImplementationHeader();
 			WriteClassesImplementation();
@@ -1177,7 +1153,7 @@ function  __getMagic(const cond: array of boolean): integer; var i: integer; var
 					Write("var ");
 				}
 				else if (param.Type is CiStringType) {
-					Write("var ");
+					Write(""); // TODO should be var but constant propagration must be handled
 				}
 				WriteName(param);
 				Write(": ");
@@ -1434,7 +1410,6 @@ function  __getMagic(const cond: array of boolean): integer; var i: integer; var
 		}
 
 		void ICiSymbolVisitor.Visit(CiEnum enu) {
-			OpenBlock(false);
 			WriteLine();
 			Write(enu.Documentation);
 			WriteName(enu);
@@ -1454,7 +1429,6 @@ function  __getMagic(const cond: array of boolean): integer; var i: integer; var
 			WriteLine();
 			CloseBlock(false);
 			WriteLine(");");
-			CloseBlock(false);
 		}
 
 		void Write(CiVisibility visibility) {
@@ -1698,6 +1672,11 @@ function  __getMagic(const cond: array of boolean): integer; var i: integer; var
 					elemType = type.ElementType;
 				}
 				Array array = (Array)value;
+				Write("SetLength(");
+				WriteName(konst);
+				Write(", ");
+				Write(array.Length);
+				WriteLine(");");
 				for (int i = 0; i < array.Length; i++) {
 					WriteName(konst);
 					Write("["+i+"]:= ");

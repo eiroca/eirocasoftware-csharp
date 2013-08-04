@@ -1011,8 +1011,8 @@ namespace Foxoft.Ci {
 						Write(": ");
 						Write(info.Definition);
 						WriteLine(";");
-						WriteLine("procedure __CCLEAR(var x: "+info.Name+"); inline; var i: integer; begin for i:= low(x) to high(x) do x[i]:= "+info.ItemDefault+"; end;");
-						WriteLine("procedure __CFILL (var x: "+info.Name+"; v: "+info.ItemType+"); inline; var i: integer; begin for i:= low(x) to high(x) do x[i]:= v; end;");
+						WriteLine("procedure __CCLEAR(var x: "+info.Name+"); var i: integer; begin for i:= low(x) to high(x) do x[i]:= "+info.ItemDefault+"; end;");
+						WriteLine("procedure __CFILL (var x: "+info.Name+"; v: "+info.ItemType+"); var i: integer; begin for i:= low(x) to high(x) do x[i]:= v; end;");
 						WriteLine("procedure __CCOPY (const source: "+info.Name+"; sourceStart: integer; var dest: "+info.Name+"; destStart: integer; len: integer); var i: integer; begin for i:= 0 to len do dest[i+destStart]:= source[i+sourceStart]; end;");
 						if ((info.ItemType!=null) && (info.ItemType.Equals("byte"))) {
 							getResProc = true;
@@ -1022,18 +1022,18 @@ namespace Foxoft.Ci {
 			}
 			if (getResProc) {
 				WriteLine("function  __getBinaryResource(const aName: string): ArrayOf_byte; var myfile: TFileStream; begin myFile := TFileStream.Create(aName, fmOpenRead); SetLength(Result, myFile.Size); try myFile.seek(0, soFromBeginning); myFile.ReadBuffer(Result, myFile.Size); finally myFile.free; end; end;");
-				WriteLine("function  __TOSTR (const x: ArrayOf_byte): string; inline; var i: integer; begin Result:= ''; for i:= low(x) to high(x) do Result:= Result + chr(x[i]); end;");
+				WriteLine("function  __TOSTR (const x: ArrayOf_byte): string; var i: integer; begin Result:= ''; for i:= low(x) to high(x) do Result:= Result + chr(x[i]); end;");
 			}
 			WriteLine(@"
-function  __CDEC_Pre (var x: integer): integer; inline; begin dec(x); Result:= x; end;
-function  __CDEC_Post(var x: integer): integer; inline; begin Result:= x; dec(x); end;
-function  __CINC_Pre (var x: integer): integer; inline; begin inc(x); Result:= x; end;
-function  __CINC_Post(var x: integer): integer; inline; begin Result:= x; inc(x); end;
-function  __CDEC_Pre (var x: byte): integer; inline; begin dec(x); Result:= x; end;
-function  __CDEC_Post(var x: byte): integer; inline; begin Result:= x; dec(x); end;
-function  __CINC_Pre (var x: byte): integer; inline; begin inc(x); Result:= x; end;
-function  __CINC_Post(var x: byte): integer; inline; begin Result:= x; inc(x); end;
-function  __getMagic(const cond: array of boolean): integer; inline; var i: integer; var o: integer; begin Result:= 0; for i:= low(cond) to high(cond) do begin if (cond[i]) then o:= 1 else o:= 0; Result:= Result shl 1 + o; end; end;
+function  __CDEC_Pre (var x: integer): integer; overload; inline; begin dec(x); Result:= x; end;
+function  __CDEC_Post(var x: integer): integer; overload; inline; begin Result:= x; dec(x); end;
+function  __CINC_Pre (var x: integer): integer; overload; inline; begin inc(x); Result:= x; end;
+function  __CINC_Post(var x: integer): integer; overload; inline; begin Result:= x; inc(x); end;
+function  __CDEC_Pre (var x: byte): byte; overload; inline; begin dec(x); Result:= x; end;
+function  __CDEC_Post(var x: byte): byte; overload; inline; begin Result:= x; dec(x); end;
+function  __CINC_Pre (var x: byte): byte; overload; inline; begin inc(x); Result:= x; end;
+function  __CINC_Post(var x: byte): byte; overload; inline; begin Result:= x; inc(x); end;
+function  __getMagic(const cond: array of boolean): integer; var i: integer; var o: integer; begin Result:= 0; for i:= low(cond) to high(cond) do begin if (cond[i]) then o:= 1 else o:= 0; Result:= Result shl 1 + o; end; end;
 ");
 		}
 		

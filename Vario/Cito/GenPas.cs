@@ -23,9 +23,51 @@ using System.Collections.Generic;
 
 namespace Foxoft.Ci {
 
+	public delegate bool StatementAction(ICiStatement s);
+	
 	public class GenPas : SourceGenerator, ICiSymbolVisitor {
 
 		public class ProgramPreProcessing {
+			
+			public static bool Execute(ICiStatement[] stmt, StatementAction action) {
+				if (stmt!=null) {
+					foreach (ICiStatement s in stmt) {
+						if (Execute(s, action)) return true;
+					}
+				}
+				return false;
+			}
+
+			public static bool Execute(ICiStatement stmt, StatementAction action) {
+				if (stmt == null) return false;
+				if (action(stmt)) return true;
+				if (stmt is CiBlock) {
+					if (Execute(((CiBlock)stmt).Statements, action)) return true;
+				}
+				else if (stmt is CiFor) {
+					CiFor loop = (CiFor)stmt;
+					if (Execute(loop.Init, action)) return true;
+					if (Execute(loop.Body, action)) return true;
+					if (Execute(loop.Advance, action)) return true;
+				}
+				else if (stmt is CiLoop) {
+					CiLoop loop = (CiLoop)stmt;
+					if (Execute(loop.Body, action)) return true;
+				}
+				else if (stmt is CiIf) {
+					CiIf iiff = (CiIf)stmt;
+					if (Execute(iiff.OnTrue, action)) return true;
+					if (Execute(iiff.OnFalse, action)) return true;
+				}
+				else if (stmt is CiSwitch) {
+					CiSwitch swith = (CiSwitch)stmt;
+					foreach(CiCase cas in swith.Cases) {
+						if (Execute(cas.Body, action)) return true;
+					}
+					if (Execute(swith.DefaultBody, action)) return true;
+				}
+				return false;
+			}
 
 			public void Parse(CiProgram program) {
 				SymbolMapping.Reset();
@@ -105,54 +147,36 @@ namespace Foxoft.Ci {
 			}
 
 			public void Visit(CiMethod method) {
-				Visit(method, (method.Body!=null ?  method.Body.Statements : null));
+				Execute((method.Body!=null ?  method.Body : null), s => VisitStatement(method, s));
 			}
 			
-			protected void Visit(CiMethod method, ICiStatement stmt) {
-				if (stmt == null) {
-					return;
-				}
+			protected bool CheckCode(ICiStatement[] code) {
+				CiBreak brk = (code!=null) ? code[code.Length-1] as CiBreak : null;
+				return ProgramPreProcessing.Execute(code, s => ((s is CiBreak) && (s != brk)));
+			}
+			
+			protected bool VisitStatement(CiMethod method, ICiStatement stmt) {
 				if (stmt is CiVar) {
 					var v = (CiVar)stmt;
 					SymbolMapping parent = SymbolMapping.Find(method);
 					SymbolMapping.AddSymbol(parent, v);
 					SuperType.AddType(v.Type);
 				}
-				else if (stmt is CiBlock) {
-					Visit(method, ((CiBlock)stmt).Statements);
-				}
-				else if (stmt is CiFor) {
-					CiFor loop = (CiFor)stmt;
-					Visit(method, loop.Init);
-					Visit(method, loop.Body);
-					Visit(method, loop.Advance);
-				}
-				else if (stmt is CiLoop) {
-					CiLoop loop = (CiLoop)stmt;
-					Visit(method, loop.Body);
-				}
-				else if (stmt is CiIf) {
-					CiIf iiff = (CiIf)stmt;
-					Visit(method, iiff.OnTrue);
-					Visit(method, iiff.OnFalse);
-				}
 				else if (stmt is CiSwitch) {
 					CiSwitch swith = (CiSwitch)stmt;
-					BreakExit.AddSwitch(method, swith);
-					foreach(CiCase cas in swith.Cases) {
-						Visit(method, cas.Body);
+					bool needExit = false;
+					foreach (CiCase kase in swith.Cases) {
+						needExit = CheckCode(kase.Body);
+						if (needExit) break;
 					}
-					Visit(method, swith.DefaultBody);
+					if (!needExit) {
+						needExit = CheckCode(swith.DefaultBody);
+					}
+					if (needExit) {
+						BreakExit.AddSwitch(method, swith);
+					}
 				}
-			}
-			
-			protected virtual void Visit(CiMethod method, ICiStatement[] block) {
-				if (block == null) {
-					return;
-				}
-				foreach (ICiStatement stmt in block) {
-					Visit(method, stmt);
-				}
+				return false;
 			}
 			
 		}
@@ -1071,6 +1095,14 @@ function  __getMagic(const cond: array of boolean): integer; var i: integer; var
 				WriteVars(klass.Constructor);
 			}
 			OpenBlock();
+			foreach (CiSymbol member in klass.Members) {
+				if (member is CiConst) {
+					var konst = (CiConst)member;
+					if (konst.Type is CiArrayType) {
+						WriteConstFull(konst);
+					}
+				}
+			}
 			WriteVarsInit(klass);
 			if (klass.Constructor!=null) {
 				WriteVarsInit(klass.Constructor);
@@ -1267,61 +1299,97 @@ function  __getMagic(const cond: array of boolean): integer; var i: integer; var
 			BreakExit.Pop();
 		}
 
+		public bool IsAssignment(ICiStatement stmt, CiVar v4r)	{
+			CiVar v = null;
+			if (stmt is CiPostfixExpr) {
+				if (((CiPostfixExpr)stmt).Inner is CiVarAccess) {
+					v = (CiVar)((CiVarAccess)(((CiPostfixExpr)stmt).Inner)).Var;
+				}
+			}
+			if (stmt is CiVarAccess) {
+				v = (CiVar)((CiVarAccess)stmt).Var;
+			}
+			if (stmt is CiAssign) {
+				if (((CiAssign)stmt).Target is CiVarAccess) {
+					v = (CiVar)((CiVarAccess)(((CiAssign)stmt).Target)).Var;
+				}
+			}
+			return (v!=null) ? (v == v4r) : false;
+		}
+
+		// Detect Pascal For loop
+		public bool ValidPascalFor(CiFor stmt)	{
+			if (!(stmt.Init is CiVar)) return false;
+			// Single variable
+			var loopVar = (CiVar)stmt.Init;
+			if (loopVar.InitialValue is CiCondExpr) return false;
+			// Step must be variable (de|in)cremented
+			if ((stmt.Advance is CiPostfixExpr) && (stmt.Cond is CiBoolBinaryExpr)) {
+				if (!IsAssignment(stmt.Advance, loopVar)) return false;
+				CiBoolBinaryExpr cond = (CiBoolBinaryExpr)stmt.Cond;
+				// bounded by const or var
+				if ((cond.Left is CiVarAccess) && ((cond.Right is CiConstExpr) || (cond.Right is CiVarAccess))) {
+					if (((CiVarAccess)cond.Left).Var == loopVar) {
+						// loop varibale cannot be changed inside the loop
+						if (ProgramPreProcessing.Execute(stmt.Body, s => IsAssignment(s, loopVar))) return false;
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+		
 		public override void Visit(CiFor stmt)	{
 			BreakExit.Push(stmt);
 			bool hasInit = (stmt.Init != null);
 			bool hasNext = (stmt.Advance != null);
 			bool hasCond = (stmt.Cond != null);
 			if (hasInit && hasNext && hasCond) {
-				if ((stmt.Init is CiVar)  && (stmt.Advance is CiPostfixExpr) && (stmt.Cond is CiBoolBinaryExpr)) {
+				if (ValidPascalFor(stmt)) {
 					CiBoolBinaryExpr cond = (CiBoolBinaryExpr)stmt.Cond;
-					if ((cond.Left is CiVarAccess) && ((cond.Right is CiConstExpr) || (cond.Right is CiVarAccess))) {
-						if (((CiVarAccess)cond.Left).Var == stmt.Init) {
-							CiPostfixExpr mode = (CiPostfixExpr)stmt.Advance;
-							String dir = null;
-							int lmt = 0;
-							if (mode.Op == CiToken.Increment) {
-								dir = " to ";
-								if (cond.Op == CiToken.LessOrEqual) {
-									lmt = 0;
-								}
-								else if (cond.Op == CiToken.Less) {
-									lmt = -1;
-								}
-							}
-							if (mode.Op == CiToken.Decrement) {
-								dir =  "downto ";
-								if (cond.Op == CiToken.GreaterOrEqual) {
-									lmt = 0;
-								}
-								else if (cond.Op == CiToken.Greater) {
-									lmt = +1;
-								}
-							}
-							if (dir!=null) {
-								CiVar var = (CiVar)stmt.Init;
-								Write("for ");
-								WriteInitVal(var);
-								Write(dir);
-								if ((cond.Right is CiConstExpr) && (((CiConstExpr)cond.Right).Value is Int32)) {
-									Write((Int32)((CiConstExpr)cond.Right).Value + lmt);
+					CiPostfixExpr mode = (CiPostfixExpr)stmt.Advance;
+					String dir = null;
+					int lmt = 0;
+					if (mode.Op == CiToken.Increment) {
+						dir = " to ";
+						if (cond.Op == CiToken.LessOrEqual) {
+							lmt = 0;
+						}
+						else if (cond.Op == CiToken.Less) {
+							lmt = -1;
+						}
+					}
+					if (mode.Op == CiToken.Decrement) {
+						dir =  " downto ";
+						if (cond.Op == CiToken.GreaterOrEqual) {
+							lmt = 0;
+						}
+						else if (cond.Op == CiToken.Greater) {
+							lmt = +1;
+						}
+					}
+					if (dir!=null) {
+						CiVar var = (CiVar)stmt.Init;
+						Write("for ");
+						WriteInitVal(var);
+						Write(dir);
+						if ((cond.Right is CiConstExpr) && (((CiConstExpr)cond.Right).Value is Int32)) {
+							Write((Int32)((CiConstExpr)cond.Right).Value + lmt);
+						}
+						else {
+							Write(cond.Right);
+							if (lmt!=0) {
+								if (lmt>0) {
+									Write("+"+lmt);
 								}
 								else {
-									Write(cond.Right);
-									if (lmt!=0) {
-										if (lmt>0) {
-											Write("+"+lmt);
-										}
-										else {
-											Write(lmt);
-										}
-									}
+									Write(lmt);
 								}
-								Write(" do ");
-								WriteChild(stmt.Body);
-								return;
 							}
 						}
+						Write(" do ");
+						WriteChild(stmt.Body);
+						return;
 					}
 				}
 			}
@@ -2013,7 +2081,7 @@ function  __getMagic(const cond: array of boolean): integer; var i: integer; var
 		}
 
 		public void WriteAssign(CiVar Target, CiExpr Source) {
-			if (Source is CiCondExpr) {
+			if (!NoIIFExpand.In(1) && (Source is CiCondExpr)) {
 				CiCondExpr expr = (CiCondExpr)Source;
 				Write("if ");
 				WriteNonAssocChild(expr, expr.Cond);
@@ -2315,12 +2383,17 @@ function  __getMagic(const cond: array of boolean): integer; var i: integer; var
 
 		void ICiSymbolVisitor.Visit(CiConst konst) {
 			Write(konst.Documentation);
-			Write("public const ");
+			Write("public ");
+			if (!(konst.Type is CiArrayType)) {
+				Write("const ");
+			}
 			WriteName(konst);
 			Write(": ");
 			Write(konst.Type);
-			Write(" = ");
-			WriteConst(konst.Type, konst.Value);
+			if (!(konst.Type is CiArrayType)) {
+				Write(" = ");
+				WriteConst(konst.Type, konst.Value);
+			}
 			WriteLine(";");
 		}
 

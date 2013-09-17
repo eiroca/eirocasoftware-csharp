@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6BC80053-8B67-4873-8899-193208F91EC6}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>CiToViewer</RootNamespace>
+    <AssemblyName>CiToPAD</AssemblyName>
+    <ReleaseVersion>0.5</ReleaseVersion>
+    <BaseDirectory>.</BaseDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="gtk-sharp, Version=2.4.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="gdk-sharp, Version=2.4.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="glib-sharp, Version=2.4.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="glade-sharp, Version=2.4.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="pango-sharp, Version=2.4.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="atk-sharp, Version=2.4.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="Mono.Posix" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="gtk-gui\gui.stetic">
+      <LogicalName>gui.stetic</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="gtk-gui\generated.cs" />
+    <Compile Include="MainWindow.cs" />
+    <Compile Include="gtk-gui\MainWindow.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\CiToCommon\CiDocLexer.cs">
+      <Link>CiDocLexer.cs</Link>
+    </Compile>
+    <Compile Include="..\CiToCommon\CiDocParser.cs">
+      <Link>CiDocParser.cs</Link>
+    </Compile>
+    <Compile Include="..\CiToCommon\CiLexer.cs">
+      <Link>CiLexer.cs</Link>
+    </Compile>
+    <Compile Include="..\CiToCommon\CiMacroProcessor.cs">
+      <Link>CiMacroProcessor.cs</Link>
+    </Compile>
+    <Compile Include="..\CiToCommon\CiParser.cs">
+      <Link>CiParser.cs</Link>
+    </Compile>
+    <Compile Include="..\CiToCommon\CiResolver.cs">
+      <Link>CiResolver.cs</Link>
+    </Compile>
+    <Compile Include="..\CiToCommon\CiTree.cs">
+      <Link>CiTree.cs</Link>
+    </Compile>
+    <Compile Include="..\CiToCommon\SymbolTable.cs">
+      <Link>SymbolTable.cs</Link>
+    </Compile>
+    <Compile Include="..\CiToGenerator\GenAs.cs">
+      <Link>GenAs.cs</Link>
+    </Compile>
+    <Compile Include="..\CiToGenerator\GenC.cs">
+      <Link>GenC.cs</Link>
+    </Compile>
+    <Compile Include="..\CiToGenerator\GenC89.cs">
+      <Link>GenC89.cs</Link>
+    </Compile>
+    <Compile Include="..\CiToGenerator\GenCs.cs">
+      <Link>GenCs.cs</Link>
+    </Compile>
+    <Compile Include="..\CiToGenerator\GenD.cs">
+      <Link>GenD.cs</Link>
+    </Compile>
+    <Compile Include="..\CiToGenerator\GenJava.cs">
+      <Link>GenJava.cs</Link>
+    </Compile>
+    <Compile Include="..\CiToGenerator\GenJs.cs">
+      <Link>GenJs.cs</Link>
+    </Compile>
+    <Compile Include="..\CiToGenerator\GenJsWithTypedArrays.cs">
+      <Link>GenJsWithTypedArrays.cs</Link>
+    </Compile>
+    <Compile Include="..\CiToGenerator\GenPas.cs">
+      <Link>GenPas.cs</Link>
+    </Compile>
+    <Compile Include="..\CiToGenerator\GenPerl5.cs">
+      <Link>GenPerl5.cs</Link>
+    </Compile>
+    <Compile Include="..\CiToGenerator\GenPerl58.cs">
+      <Link>GenPerl58.cs</Link>
+    </Compile>
+    <Compile Include="..\CiToGenerator\GenPerl510.cs">
+      <Link>GenPerl510.cs</Link>
+    </Compile>
+    <Compile Include="..\CiToGenerator\GenPHP.cs">
+      <Link>GenPHP.cs</Link>
+    </Compile>
+    <Compile Include="CiToViewerHelper.cs" />
+    <Compile Include="GenHelper.cs" />
+    <Compile Include="..\CiToGenerator\SourceGenerator.cs">
+      <Link>SourceGenerator.cs</Link>
+    </Compile>
+    <Compile Include="..\CiToGenerator\SourceHelper.cs">
+      <Link>SourceHelper.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,82 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CiTo", "CiToCLI\CiTo.csproj", "{25A49704-6805-4792-B445-DF8F08414AE5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CiToViewer", "CiToViewer\CiToViewer.csproj", "{6BC80053-8B67-4873-8899-193208F91EC6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CiPad", "CiToPAD\CiPad.csproj", "{706860A9-7545-4F7C-9A67-CF4DA81DDE03}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{25A49704-6805-4792-B445-DF8F08414AE5}.Debug|x86.ActiveCfg = Debug|x86
+		{25A49704-6805-4792-B445-DF8F08414AE5}.Debug|x86.Build.0 = Debug|x86
+		{25A49704-6805-4792-B445-DF8F08414AE5}.Release|x86.ActiveCfg = Release|x86
+		{25A49704-6805-4792-B445-DF8F08414AE5}.Release|x86.Build.0 = Release|x86
+		{6BC80053-8B67-4873-8899-193208F91EC6}.Debug|x86.ActiveCfg = Debug|x86
+		{6BC80053-8B67-4873-8899-193208F91EC6}.Debug|x86.Build.0 = Debug|x86
+		{6BC80053-8B67-4873-8899-193208F91EC6}.Release|x86.ActiveCfg = Release|x86
+		{6BC80053-8B67-4873-8899-193208F91EC6}.Release|x86.Build.0 = Release|x86
+		{706860A9-7545-4F7C-9A67-CF4DA81DDE03}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{706860A9-7545-4F7C-9A67-CF4DA81DDE03}.Debug|x86.Build.0 = Debug|Any CPU
+		{706860A9-7545-4F7C-9A67-CF4DA81DDE03}.Release|x86.ActiveCfg = Release|Any CPU
+		{706860A9-7545-4F7C-9A67-CF4DA81DDE03}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = CiToViewer\CiToViewer.csproj
+		Policies = $0
+		$0.TextStylePolicy = $1
+		$1.FileWidth = 200
+		$1.TabWidth = 2
+		$1.IndentWidth = 2
+		$1.EolMarker = Unix
+		$1.inheritsSet = VisualStudio
+		$1.inheritsScope = text/plain
+		$1.scope = text/x-csharp
+		$0.CSharpFormattingPolicy = $2
+		$2.IndentSwitchBody = True
+		$2.AlignEmbeddedUsingStatements = False
+		$2.AlignEmbeddedIfStatements = False
+		$2.NamespaceBraceStyle = EndOfLine
+		$2.ClassBraceStyle = EndOfLine
+		$2.InterfaceBraceStyle = EndOfLine
+		$2.StructBraceStyle = EndOfLine
+		$2.EnumBraceStyle = EndOfLine
+		$2.MethodBraceStyle = EndOfLine
+		$2.ConstructorBraceStyle = EndOfLine
+		$2.DestructorBraceStyle = EndOfLine
+		$2.ElseNewLinePlacement = NewLine
+		$2.ElseIfNewLinePlacement = SameLine
+		$2.CatchNewLinePlacement = NewLine
+		$2.FinallyNewLinePlacement = NewLine
+		$2.WhileNewLinePlacement = NewLine
+		$2.BeforeMethodDeclarationParentheses = False
+		$2.BeforeMethodCallParentheses = False
+		$2.BeforeConstructorDeclarationParentheses = False
+		$2.BeforeIndexerDeclarationBracket = False
+		$2.BeforeDelegateDeclarationParentheses = False
+		$2.NewParentheses = False
+		$2.SpacesBeforeBrackets = False
+		$2.BlankLinesBeforeUsings = 1
+		$2.BlankLinesBeforeFirstDeclaration = 1
+		$2.BlankLinesBetweenEventFields = 1
+		$2.MethodCallArgumentWrapping = DoNotWrap
+		$2.MethodDeclarationParameterWrapping = DoNotWrap
+		$2.IndexerDeclarationParameterWrapping = DoNotWrap
+		$2.IndexerArgumentWrapping = DoNotWrap
+		$2.inheritsSet = Mono
+		$2.inheritsScope = text/x-csharp
+		$2.scope = text/x-csharp
+		$0.TextStylePolicy = $3
+		$3.FileWidth = 120
+		$3.TabsToSpaces = False
+		$3.inheritsSet = VisualStudio
+		$3.inheritsScope = text/plain
+		$3.scope = text/plain
+		version = 0.5
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,43 @@
+﻿How to compile cito
+===================
+
+Getting source code
+-------------------
+
+There are two ways to get the source code:
+
+From an official release::
+http://sourceforge.net/projects/cito/files/cito/[Download] a `.tar.gz` file and uncompress it. On Windows you may use http://7-zip.org[7-Zip] for decompression.
+
+From the Git repository::
+This way you'll get the latest code with all its consequences (such as out-of-date documentation). Use a Git client. For a command-line Git client, type:
++
+--------------------------------------------------------------------------------
+git clone git://git.code.sf.net/p/cito/code cito-code
+--------------------------------------------------------------------------------
+
+Compilation
+-----------
+
+Once you have the source code you have the following options of compiling it:
+
+Using MSBuild::
+MSBuild is part of the .NET Framework. In the directory with the sources run `msbuild CiTo.csproj`.
+
+Using Mono i `xbuild`::
+You need a C# compiler (`gmcs`) and the Mono counterpart of MSBuild (`xbuild`). In the directory with the sources run `xbuild CiTo.csproj`.
+
+Using GNU Make::
+You need a C# compiler (`csc` lub `gmcs`).  In the directory with the sources run `make`.
+
+Using Visual Studio::
+Open `CiTo.csproj`. Build.
+
+Installing (Linux)
+------------------
+
+To install, run:
+--------------------------------------------------------------------------------
+sudo make install
+--------------------------------------------------------------------------------
+This will create Mono wrappers `cito` and `cipad` in the default directory `/usr/local/bin`.

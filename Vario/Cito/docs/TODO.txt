@@ -1,0 +1,24 @@
+Multistep per supportare linguaggi con fase dichiarativa (C, Pascal)
+CaseInsensitive
+CiField, CiVar derivino da CiTypedSymbol
+Traking variabili
+Stack statment (es. per capire significato break)
+Separazione writer da source generator
+
+Problemi
+- generazione nome univoco
+- generazione nome univoco con methodi virtual
+- operatore ?:
+- operatori ++ e --
+- UTF8 in string
+- Matrix
+
+
+Ottimizzazioni
+- inizializzazione costanti
+- cicli for
+- return come ultimo statment
+- break
+- Use nil instead of null
+- nomi variabili dichiarati internamente ma reciclabili (es. for (int i)... for (int i))
+

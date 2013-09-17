@@ -1,0 +1,16 @@
+public delegate void StringConsumer(string s);
+
+public delegate void ByteWriter(int data);
+
+public class TestCi {
+	public static byte[] Fill(byte c) {
+		byte[5] res = 0;
+		for (int i = c!=0 ? 0 : 1; i < 5; i++) {
+			res[i] = 1;
+		}
+		for (int i = 0; i < 10; i++) {
+			i++;
+		}
+		return res;
+	}
+}

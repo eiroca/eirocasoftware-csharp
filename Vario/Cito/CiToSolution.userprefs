@@ -1,6 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release|x86" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="CiToGenerator\GenPas.cs">
+    <Files>
+      <File FileName="CiToGenerator\SourceHelper.cs" Line="48" Column="29" />
+      <File FileName="CiToGenerator\GenPas.cs" Line="654" Column="1" />
+      <File FileName="CiToCommon\CiTree.cs" Line="409" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

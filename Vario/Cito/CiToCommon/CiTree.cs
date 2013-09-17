@@ -355,10 +355,9 @@ public class CiEnum : CiType
 	public override void Accept(ICiSymbolVisitor v) { v.Visit(this); }
 }
 
-public class CiField : CiSymbol
+public class CiField : CiTypedSymbol
 {
 	public CiClass Class;
-	public CiType Type;
 	public override void Accept(ICiSymbolVisitor v) { v.Visit(this); }
 }
 
@@ -407,9 +406,13 @@ public class CiConst : CiSymbol, ICiStatement
 	public void Accept(ICiStatementVisitor v) { v.Visit(this); }
 }
 
-public class CiVar : CiSymbol, ICiStatement
+public class CiTypedSymbol : CiSymbol
 {
-	public CiType Type;
+  public CiType Type;
+}
+
+public class CiVar : CiTypedSymbol, ICiStatement
+{
 	public CiExpr InitialValue;
 	public bool WriteInitialValue; // C89 only
 	public bool CompletesNormally { get { return true; } }

@@ -39,8 +39,6 @@ Global
 		$1.scope = text/x-csharp
 		$0.CSharpFormattingPolicy = $2
 		$2.IndentSwitchBody = True
-		$2.AlignEmbeddedUsingStatements = False
-		$2.AlignEmbeddedIfStatements = False
 		$2.NamespaceBraceStyle = EndOfLine
 		$2.ClassBraceStyle = EndOfLine
 		$2.InterfaceBraceStyle = EndOfLine

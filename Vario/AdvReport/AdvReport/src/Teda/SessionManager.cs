@@ -15,11 +15,9 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 using System;
-using System.Data;
-using System.Collections;
 using System.Collections.Generic;
-using System.Timers;
 using System.Threading;
+using System.Timers;
 
 namespace Reporting {
 
@@ -32,7 +30,7 @@ namespace Reporting {
     public string reqProtocol;
     public int status;
     public int byteSent;
-    
+
     public int CompareTo(Object obj) {
       Hit h = (Hit)obj;
       return when.CompareTo(h.when);
@@ -40,8 +38,8 @@ namespace Reporting {
 
   }
 
-  public class Session  {
-    
+  public class Session {
+
     public bool isNew = true;
     public DateTime lastTouch = DateTime.Now;
     public DateTime start;
@@ -51,10 +49,10 @@ namespace Reporting {
     public string user;
     public string userAgent;
     public SortedList<long, Hit> hits = new SortedList<long, Hit>();
-    
+
     public Session() {
     }
-    
+
     public bool Update(HitEventItem hit) {
       if (isNew) {
         isNew = false;
@@ -89,30 +87,30 @@ namespace Reporting {
       hits.Add(tick, h);
       return true;
     }
-       
+
   }
 
   public class SessionManager : IWorkingElement {
-    
+
     Dictionary<string, Session> sessions = new Dictionary<string, Session>();
-    
+
     private static ReaderWriterLock readWriteLock = new ReaderWriterLock();
 
     System.Timers.Timer clock;
     WorkerStats stats = new WorkerStats();
     MyQueue<Session> sessionQueue;
-    
+
     DateTime limit;
     const int CHECK_DELAY = 5000;
     const int TIMEOUT = 60000;
-    
+
     public SessionManager(MyQueue<Session> sessionQueue) {
       this.sessionQueue = sessionQueue;
       limit = DateTime.Now;
       clock = new System.Timers.Timer(CHECK_DELAY);
       clock.Elapsed += new ElapsedEventHandler(CleanUp);
     }
-    
+
     public Session GetSession(string user) {
       Session result = null;
       bool cached;
@@ -129,12 +127,12 @@ namespace Reporting {
         }
         // Uncomment for accurate stats (performance penalty)
         //lock (typeof(SessionManager)) {
-          if (cached) {
-            stats.OK++;        
-          }
-          else {
-            stats.KO++;        
-          }
+        if (cached) {
+          stats.OK++;
+        }
+        else {
+          stats.KO++;
+        }
         // }
       }
       finally {
@@ -163,7 +161,7 @@ namespace Reporting {
         Flush(s);
       }
     }
-    
+
     protected void CleanUp(object source, ElapsedEventArgs e) {
       Console.WriteLine("Session cleanup");
       clock.Stop();
@@ -183,7 +181,7 @@ namespace Reporting {
         clock.Start();
       }
       foreach (Session s in flushed) {
-        Console.WriteLine("Cleanup "+s.user);
+        Console.WriteLine("Cleanup " + s.user);
         Flush(s);
       }
     }
@@ -191,24 +189,24 @@ namespace Reporting {
     void IWorkingElement.Start() {
       clock.Start();
     }
-      
+
     void IWorkingElement.Stop() {
       clock.Stop();
       FlushAll();
     }
-      
+
     bool IWorkingElement.IsFinished() {
       return true;
     }
-      
+
     string IWorkingElement.GetName() {
       return "Session Manager";
     }
-      
+
     WorkerStats IWorkingElement.Stats() {
       return stats;
     }
 
   }
-  
+
 }

@@ -15,27 +15,25 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 using System;
-using System.Threading;
-using System.Text.RegularExpressions;
 
 namespace Reporting {
- 
-	public class Dispatcher : Worker<EventItem> {
-		
+
+  public class Dispatcher : Worker<EventItem> {
+
     MyQueue<EventItem>[] outQueue;
     int numQueue;
-    
+
     public Dispatcher(string aName, MyQueue<EventItem> inQueue, MyQueue<EventItem>[] outQueue) : base(aName, inQueue) {
       this.outQueue = outQueue;
       numQueue = outQueue.Length;
     }
-  
-  	override public bool Process(EventItem row) {
+
+    override public bool Process(EventItem row) {
       int idx = Math.Abs(row.key) % numQueue;
       outQueue[idx].Insert(row);
       return true;
-  	}
+    }
 
   }
-	
+
 }

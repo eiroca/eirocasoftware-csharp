@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 using System;
 
 namespace Reporting {
-  
+
   public enum LogFormat {
     CLF,
     COMBINED
@@ -26,12 +26,12 @@ namespace Reporting {
   public enum EventType {
     HIT
   }
-  
+
   public class FileItem {
     public LogFormat type;
     public string path;
   }
-    
+
   public class RowItem {
     public LogFormat type;
     public string line;

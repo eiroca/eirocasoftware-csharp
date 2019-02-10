@@ -14,21 +14,20 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-using System;
 
 namespace Reporting {
 
   public class EventProcessor : Worker<EventItem> {
-  
+
     SessionManager sessionManager;
     MyQueue<TrafficEventItem> trafficQueue;
-    
+
     public EventProcessor(string aName, MyQueue<EventItem> inQueue, SessionManager sessionManager, MyQueue<TrafficEventItem> trafficQueue) : base(aName, inQueue) {
       this.trafficQueue = trafficQueue;
       this.sessionManager = sessionManager;
     }
-  
-  	override public bool Process(EventItem ev) {
+
+    override public bool Process(EventItem ev) {
       if (ev is HitEventItem) {
         HitEventItem hit = (HitEventItem)ev;
         Session session = sessionManager.GetSession(hit.user);
@@ -41,8 +40,8 @@ namespace Reporting {
         trafficQueue.Insert(ti);
       }
       return false;
-  	}
+    }
 
   }
-  
+
 }

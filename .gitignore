@@ -1,0 +1,11 @@
+bin
+obj
+tags
+*.exe
+*.exe.mdb
+*.pdb
+*.html
+*.suo
+/*.userprefs
+**/.vs/*
+**/packages/

@@ -9,7 +9,7 @@
  */
 #endregion Header
 
-namespace DifferenceEngine  {
+namespace DifferenceEngine {
   using System;
   using System.Collections;
 
@@ -38,7 +38,7 @@ namespace DifferenceEngine  {
       return (TextLine)_lines[index];
     }
     #endregion Methods
-    
+
   }
-  
+
 }

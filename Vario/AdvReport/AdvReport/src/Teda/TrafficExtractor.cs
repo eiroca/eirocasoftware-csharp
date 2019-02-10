@@ -22,12 +22,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
-using System;
 
 namespace Reporting {
- 
-	public class TrafficExtractor : Worker<TrafficEventItem> {
-    
+
+  public class TrafficExtractor : Worker<TrafficEventItem> {
+
     MyQueue<TrafficEventItem> trafficQueue;
 
     public TrafficExtractor(string aName, MyQueue<TrafficEventItem> inQueue) : base(aName, inQueue) {
@@ -37,7 +36,7 @@ namespace Reporting {
     override public bool Process(TrafficEventItem row) {
       return true;
     }
-    
+
   }
-  
+
 }

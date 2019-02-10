@@ -1,6 +1,5 @@
 namespace DifferenceEngine {
   using System;
-  using System.Collections;
 
   public class DiffList_CharData : IDiffList {
     #region Fields
@@ -22,7 +21,7 @@ namespace DifferenceEngine {
       return _charList[index];
     }
     #endregion Methods
-    
+
   }
-  
+
 }

@@ -41,14 +41,14 @@ namespace WikiHelper {
     private static void Main(string[] args) {
       // Configuration dirs
       string basePath;
-      basePath = Directory.GetCurrentDirectory()+"\\";
+      basePath = Directory.GetCurrentDirectory() + "\\";
       wikiConf = new WikiConf();
       wiki = new WikiMedia(wikiConf.wikiURL, wikiConf.wikiDomain, wikiConf.wikiDefCategory);
       contatti = new ContactsHelper(wiki);
       converter = new Model2PowerPoint(wiki, basePath, basePath + wikiConf.pptTemplate);
-      string[] extNames = Directory.GetFiles(basePath+wikiConf.extractors);
+      string[] extNames = Directory.GetFiles(basePath + wikiConf.extractors);
       extractors = new SummaryBuilder[extNames.Length];
-      for(int i=0; i<extNames.Length; i++) {
+      for (int i = 0; i < extNames.Length; i++) {
         extractors[i] = new ExtractSummary(converter, extNames[i]);
       }
       string[] lines;
@@ -56,7 +56,7 @@ namespace WikiHelper {
         lines = File.ReadAllLines(wikiConf.loginConf, Encoding.UTF8);
       }
       else {
-        lines = new string[2] {null, null};
+        lines = new string[2] { null, null };
       }
       //GUI Init
       Application.EnableVisualStyles();
@@ -75,7 +75,7 @@ namespace WikiHelper {
       Application.Run(mainForm);
     }
     #endregion Methods
-    
+
   }
-  
+
 }

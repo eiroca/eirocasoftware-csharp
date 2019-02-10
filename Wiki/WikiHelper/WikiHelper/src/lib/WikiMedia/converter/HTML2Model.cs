@@ -11,7 +11,6 @@
 
 namespace WikiHelper.lib.WikiMedia.converter {
   using System;
-  using System.Collections.Generic;
   using System.Text;
 
   using HTML;
@@ -91,7 +90,7 @@ namespace WikiHelper.lib.WikiMedia.converter {
     public void AddElement(Tag tag) {
       string name = tag.Name.ToLower();
       //Convert <h> tag into Header element
-      if (name.StartsWith(TAG_H) && (name.Length==2)) {
+      if (name.StartsWith(TAG_H) && (name.Length == 2)) {
         if (tag.Opening) {
           int level = 0;
           Int32.TryParse(name.Substring(1), out level);
@@ -108,24 +107,24 @@ namespace WikiHelper.lib.WikiMedia.converter {
           txt.format = 0;
         }
         else {
-         AddIt(new NewLine());
+          AddIt(new NewLine());
         }
       }
       //Convert <span> with the Title into Header title
       else if (name.Equals(TAG_SPAN)) {
         if (tag.Opening) {
           string val = GetValue(tag, ATR_CLASS);
-          if ((val!=null) && (val.Equals(VAL_HEADLINE))) {
+          if ((val != null) && (val.Equals(VAL_HEADLINE))) {
             state = ST_TITLE;
             Flush();
           }
         }
         if (tag.Closing) {
           // TODO recursive span check
-          if (state==ST_TITLE) {
+          if (state == ST_TITLE) {
             state = ST_NORMAL;
             string res = null;
-            if ((txt!=null) && (txt.text.Length > 0)) {
+            if ((txt != null) && (txt.text.Length > 0)) {
               res = txt.ToString().Trim();
               header.title.Add(new Text(res));
             }
@@ -151,7 +150,7 @@ namespace WikiHelper.lib.WikiMedia.converter {
       }
       // Convert <br> tag into NewLine element
       else if (name.Equals(TAG_BR)) {
-        if (tag.Closing){
+        if (tag.Closing) {
           Flush();
         }
         AddIt(new NewLine());
@@ -199,15 +198,21 @@ namespace WikiHelper.lib.WikiMedia.converter {
         }
       }
       else {
-        if (tag.IsCollapsed) { ; }
-        if (tag.Opening) { Flush(); }
-        if (tag.Closing) { ; }
+        if (tag.IsCollapsed) {
+          ;
+        }
+        if (tag.Opening) {
+          Flush();
+        }
+        if (tag.Closing) {
+          ;
+        }
       }
     }
 
     //Add an element into the current model
     public void AddIt(Element e) {
-      if (header!=null) {
+      if (header != null) {
         header.elements.Add(e);
       }
       else {
@@ -219,22 +224,22 @@ namespace WikiHelper.lib.WikiMedia.converter {
     // begin and end marker (MARKER_CONTENT) or the whole page if they are absent
     public string ExtractContent(string html) {
       int start = html.IndexOf(MARKER_CONTENTBEGIN);
-      if (start<0) {
+      if (start < 0) {
         start = 0;
       }
       else {
         start += MARKER_CONTENTBEGIN.Length;
       }
       int end = html.IndexOf(MARKER_CONTENTEND);
-      if (end<0) {
+      if (end < 0) {
         end = html.Length;
       }
-      return html.Substring(start, end-start);
+      return html.Substring(start, end - start);
     }
 
     // Add current Text (if present) into the document model
     public void Flush() {
-      if ((txt!=null) && (txt.text.Length>0)) {
+      if ((txt != null) && (txt.text.Length > 0)) {
         AddIt(txt);
       }
       txt = new Text();
@@ -243,7 +248,7 @@ namespace WikiHelper.lib.WikiMedia.converter {
     //Get the value of an attribute of the tag or null if absent
     public string GetValue(Tag tag, string attributeName) {
       HTML.Attribute id = tag[attributeName];
-      string val = (id!=null? id.Value : null);
+      string val = (id != null ? id.Value : null);
       return val;
     }
 
@@ -263,20 +268,20 @@ namespace WikiHelper.lib.WikiMedia.converter {
       // Remove Table of Contents
       else if (name.Equals(TAG_TABLE)) {
         string val = GetValue(tag, ATR_ID);
-        if ((val!=null) && (val.Equals(VAL_TOC))) {
+        if ((val != null) && (val.Equals(VAL_TOC))) {
           SkipToEnd(TAG_TABLE);
           res = null;
-         }
+        }
       }
       // Remove unuseful div section
       else if (name.Equals(TAG_DIV)) {
         string val = GetValue(tag, ATR_CLASS);
-        if (val==null) {
+        if (val == null) {
           val = GetValue(tag, ATR_ID);
         }
-        if (val!=null) {
+        if (val != null) {
           bool ignored = false;
-          for (int i=0; i<IGNORECLASS.Length; i++) {
+          for (int i = 0; i < IGNORECLASS.Length; i++) {
             if (val.Equals(IGNORECLASS[i])) {
               SkipToEnd(TAG_DIV);
               ignored = true;
@@ -296,7 +301,7 @@ namespace WikiHelper.lib.WikiMedia.converter {
       // Remove Name place anchor
       else if (name.Equals(TAG_A)) {
         string val = GetValue(tag, ATR_NAME);
-        if ((val!=null)) {
+        if ((val != null)) {
           SkipToEnd(TAG_A);
           res = null;
         }
@@ -304,7 +309,7 @@ namespace WikiHelper.lib.WikiMedia.converter {
       // Remove edit action
       else if (name.Equals(TAG_SPAN)) {
         string val = GetValue(tag, ATR_CLASS);
-        if ((val!=null) && (val.Equals(VAL_EDIT))) {
+        if ((val != null) && (val.Equals(VAL_EDIT))) {
           SkipToEnd(TAG_SPAN);
           res = null;
         }
@@ -323,13 +328,13 @@ namespace WikiHelper.lib.WikiMedia.converter {
         if (ch is Tag) {
           tag = ch as Tag;
           tag = Ignorable(tag);
-          if (tag!=null) {
+          if (tag != null) {
             AddElement(tag);
           }
         }
         else {
           string s = ch as string;
-          if (s.Length>0) {
+          if (s.Length > 0) {
             txt.Append(s);
           }
         }
@@ -353,7 +358,7 @@ namespace WikiHelper.lib.WikiMedia.converter {
             }
             if (tag.Closing) {
               level--;
-              if (level==0) {
+              if (level == 0) {
                 break;
               }
             }
@@ -362,7 +367,7 @@ namespace WikiHelper.lib.WikiMedia.converter {
       }
     }
     #endregion Methods
-    
+
   }
-  
+
 }

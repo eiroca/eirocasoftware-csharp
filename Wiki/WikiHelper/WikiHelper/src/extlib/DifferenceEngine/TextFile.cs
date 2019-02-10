@@ -35,7 +35,7 @@ namespace DifferenceEngine {
       return (TextLine)_lines[index];
     }
     #endregion Methods
-    
+
   }
 
   public class TextLine : IComparable {
@@ -46,7 +46,7 @@ namespace DifferenceEngine {
 
     #region Constructors
     public TextLine(string str) {
-      Line = str.Replace("\t","    ");
+      Line = str.Replace("\t", "    ");
       _hash = str.GetHashCode();
     }
     #endregion Constructors
@@ -60,7 +60,7 @@ namespace DifferenceEngine {
       return Line;
     }
     #endregion Methods
-    
+
   }
-  
+
 }

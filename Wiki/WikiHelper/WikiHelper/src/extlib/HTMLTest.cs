@@ -34,11 +34,14 @@ namespace HTML {
         HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
         response = request.GetResponse();
         stream = response.GetResponseStream();
-        if (!response.ContentType.ToLower().StartsWith("text/")) return null;
+        if (!response.ContentType.ToLower().StartsWith("text/")) {
+          return null;
+        }
+
         StringBuilder buffer = new StringBuilder();
         string line;
         reader = new StreamReader(stream);
-        while ((line = reader.ReadLine())!=null) {
+        while ((line = reader.ReadLine()) != null) {
           buffer.AppendLine(line);
         }
         return buffer.ToString();
@@ -52,9 +55,17 @@ namespace HTML {
         return null;
       }
       finally {
-        if (reader!=null) reader.Close();
-        if (stream!=null) stream.Close();
-        if (response!=null) response.Close();
+        if (reader != null) {
+          reader.Close();
+        }
+
+        if (stream != null) {
+          stream.Close();
+        }
+
+        if (response != null) {
+          response.Close();
+        }
       }
     }
 
@@ -67,7 +78,7 @@ namespace HTML {
       string url = System.Console.ReadLine();
       System.Console.WriteLine("Scanning hyperlinks at: " + url);
       string page = GetPage(url);
-      if (page==null) {
+      if (page == null) {
         System.Console.WriteLine("Can't process that type of file, please specify an HTML file URL.");
         return;
       }
@@ -77,12 +88,14 @@ namespace HTML {
         Object ch = parser.Next();
         if (ch is Tag) {
           Tag tag = ch as Tag;
-          if (tag["href"]!=null) System.Console.WriteLine("Found link: " + tag["href"].Value);
+          if (tag["href"] != null) {
+            System.Console.WriteLine("Found link: " + tag["href"].Value);
+          }
         }
       }
     }
     #endregion Methods
-    
+
   }
-  
+
 }

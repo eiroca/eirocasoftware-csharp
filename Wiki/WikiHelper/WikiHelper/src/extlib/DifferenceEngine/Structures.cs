@@ -6,7 +6,6 @@
 
 namespace DifferenceEngine {
   using System;
-  using System.Collections;
 
   #region Enumerations
   public enum DiffResultSpanStatus {
@@ -20,7 +19,7 @@ namespace DifferenceEngine {
   }
   #endregion Enumerations
 
-  public interface IDiffList   {
+  public interface IDiffList {
     #region Methods
     int Count();
     IComparable GetByIndex(int index);
@@ -47,37 +46,45 @@ namespace DifferenceEngine {
 
     #region Properties
     public int DestIndex {
-      get{return _destIndex;}
+      get {
+        return _destIndex;
+      }
     }
 
     public int Length {
-      get{return _length;}
+      get {
+        return _length;
+      }
     }
 
     public int SourceIndex {
-      get{return _sourceIndex;}
+      get {
+        return _sourceIndex;
+      }
     }
 
     public DiffResultSpanStatus Status {
-      get{return _status;}
+      get {
+        return _status;
+      }
     }
     #endregion Properties
 
     #region Methods
     public static DiffResultSpan CreateAddDestination(int destIndex, int length) {
-      return new DiffResultSpan(DiffResultSpanStatus.AddDestination,destIndex,BAD_INDEX,length);
+      return new DiffResultSpan(DiffResultSpanStatus.AddDestination, destIndex, BAD_INDEX, length);
     }
 
     public static DiffResultSpan CreateDeleteSource(int sourceIndex, int length) {
-      return new DiffResultSpan(DiffResultSpanStatus.DeleteSource,BAD_INDEX,sourceIndex,length);
+      return new DiffResultSpan(DiffResultSpanStatus.DeleteSource, BAD_INDEX, sourceIndex, length);
     }
 
     public static DiffResultSpan CreateNoChange(int destIndex, int sourceIndex, int length) {
-      return new DiffResultSpan(DiffResultSpanStatus.NoChange,destIndex,sourceIndex,length);
+      return new DiffResultSpan(DiffResultSpanStatus.NoChange, destIndex, sourceIndex, length);
     }
 
     public static DiffResultSpan CreateReplace(int destIndex, int sourceIndex, int length) {
-      return new DiffResultSpan(DiffResultSpanStatus.Replace,destIndex,sourceIndex,length);
+      return new DiffResultSpan(DiffResultSpanStatus.Replace, destIndex, sourceIndex, length);
     }
 
     public void AddLength(int i) {
@@ -109,7 +116,9 @@ namespace DifferenceEngine {
 
     #region Properties
     public int EndIndex {
-      get{return ((_startIndex + _length) - 1);}
+      get {
+        return ((_startIndex + _length) - 1);
+      }
     }
 
     public int Length {
@@ -131,7 +140,9 @@ namespace DifferenceEngine {
     }
 
     public int StartIndex {
-      get{return _startIndex;}
+      get {
+        return _startIndex;
+      }
     }
 
     public DiffStatus Status {
@@ -146,7 +157,7 @@ namespace DifferenceEngine {
               stat = DiffStatus.NoMatch;
               break;
             default:
-              System.Diagnostics.Debug.Assert(_length == -2,"Invalid status: _length < -2");
+              System.Diagnostics.Debug.Assert(_length == -2, "Invalid status: _length < -2");
               stat = DiffStatus.Unknown;
               break;
           }
@@ -159,9 +170,9 @@ namespace DifferenceEngine {
     #region Methods
 
     public bool HasValidLength(int newStart, int newEnd, int maxPossibleDestLength) {
-      if (_length > 0)  {
+      if (_length > 0) {
         //have unlocked match
-        if ((maxPossibleDestLength < _length)||((_startIndex < newStart)||(EndIndex > newEnd))) {
+        if ((maxPossibleDestLength < _length) || ((_startIndex < newStart) || (EndIndex > newEnd))) {
           SetToUnkown();
         }
       }
@@ -169,8 +180,8 @@ namespace DifferenceEngine {
     }
 
     public void SetMatch(int start, int length) {
-      System.Diagnostics.Debug.Assert(length > 0,"Length must be greater than zero");
-      System.Diagnostics.Debug.Assert(start >= 0,"Start must be greater than or equal to zero");
+      System.Diagnostics.Debug.Assert(length > 0, "Length must be greater than zero");
+      System.Diagnostics.Debug.Assert(start >= 0, "Start must be greater than or equal to zero");
       _startIndex = start;
       _length = length;
     }
@@ -185,46 +196,46 @@ namespace DifferenceEngine {
       _length = (int)DiffStatus.Unknown;
     }
     #endregion Methods
-    
+
   }
 
   internal class DiffStateList {
-    #if USE_HASH_TABLE
+#if USE_HASH_TABLE
     private Hashtable _table;
-    #else
+#else
     private DiffState[] _array;
-    #endif
+#endif
 
     #region Constructors
     public DiffStateList(int destCount) {
-      #if USE_HASH_TABLE
+#if USE_HASH_TABLE
       _table = new Hashtable(Math.Max(9,destCount/10));
-      #else
+#else
       _array = new DiffState[destCount];
-      #endif
+#endif
     }
     #endregion Constructors
 
     #region Methods
 
     public DiffState GetByIndex(int index) {
-      #if USE_HASH_TABLE
+#if USE_HASH_TABLE
       DiffState retval = (DiffState)_table[index];
       if (retval == null) {
         retval = new DiffState();
         _table.Add(index,retval);
       }
-      #else
+#else
       DiffState retval = _array[index];
       if (retval == null) {
         retval = new DiffState();
         _array[index] = retval;
       }
-      #endif
+#endif
       return retval;
     }
 
     #endregion Methods
   }
-  
+
 }

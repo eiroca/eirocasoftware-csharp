@@ -1,7 +1,5 @@
 namespace DiffCalc {
-  using System;
   using System.Collections;
-  using System.ComponentModel;
   using System.Drawing;
   using System.Windows.Forms;
 
@@ -27,7 +25,7 @@ namespace DiffCalc {
     #region Constructors
     public Results(IDiffList source, IDiffList destination, ArrayList DiffLines, double seconds) {
       InitializeComponent();
-      this.Text = string.Format("Results: {0} secs.",seconds.ToString("#0.00"));
+      this.Text = string.Format("Results: {0} secs.", seconds.ToString("#0.00"));
       ListViewItem lviS;
       ListViewItem lviD;
       int cnt = 1;
@@ -52,9 +50,9 @@ namespace DiffCalc {
               lviS = new ListViewItem(cnt.ToString("00000"));
               lviD = new ListViewItem(cnt.ToString("00000"));
               lviS.BackColor = Color.White;
-              lviS.SubItems.Add((source.GetByIndex(drs.SourceIndex+i)).ToString());
+              lviS.SubItems.Add((source.GetByIndex(drs.SourceIndex + i)).ToString());
               lviD.BackColor = Color.White;
-              lviD.SubItems.Add((destination.GetByIndex(drs.DestIndex+i)).ToString());
+              lviD.SubItems.Add((destination.GetByIndex(drs.DestIndex + i)).ToString());
               lvSource.Items.Add(lviS);
               lvDestination.Items.Add(lviD);
               cnt++;
@@ -67,7 +65,7 @@ namespace DiffCalc {
               lviS.BackColor = Color.LightGray;
               lviS.SubItems.Add("");
               lviD.BackColor = Color.LightGreen;
-              lviD.SubItems.Add((destination.GetByIndex(drs.DestIndex+i)).ToString());
+              lviD.SubItems.Add((destination.GetByIndex(drs.DestIndex + i)).ToString());
               lvSource.Items.Add(lviS);
               lvDestination.Items.Add(lviD);
               cnt++;
@@ -78,9 +76,9 @@ namespace DiffCalc {
               lviS = new ListViewItem(cnt.ToString("00000"));
               lviD = new ListViewItem(cnt.ToString("00000"));
               lviS.BackColor = Color.Red;
-              lviS.SubItems.Add((source.GetByIndex(drs.SourceIndex+i)).ToString());
+              lviS.SubItems.Add((source.GetByIndex(drs.SourceIndex + i)).ToString());
               lviD.BackColor = Color.LightGreen;
-              lviD.SubItems.Add((destination.GetByIndex(drs.DestIndex+i)).ToString());
+              lviD.SubItems.Add((destination.GetByIndex(drs.DestIndex + i)).ToString());
               lvSource.Items.Add(lviS);
               lvDestination.Items.Add(lviD);
               cnt++;
@@ -97,11 +95,11 @@ namespace DiffCalc {
     /// </summary>
     protected override void Dispose(bool disposing) {
       if (disposing) {
-        if(components != null) {
+        if (components != null) {
           components.Dispose();
         }
       }
-      base.Dispose( disposing );
+      base.Dispose(disposing);
     }
 
     /// <summary>
@@ -119,7 +117,7 @@ namespace DiffCalc {
       //
       // lvSource
       //
-      this.lvSource.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {this.columnHeader1, this.columnHeader2});
+      this.lvSource.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { this.columnHeader1, this.columnHeader2 });
       this.lvSource.FullRowSelect = true;
       this.lvSource.HideSelection = false;
       this.lvSource.Location = new System.Drawing.Point(28, 17);
@@ -143,7 +141,7 @@ namespace DiffCalc {
       //
       // lvDestination
       //
-      this.lvDestination.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {this.columnHeader3, this.columnHeader4});
+      this.lvDestination.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { this.columnHeader3, this.columnHeader4 });
       this.lvDestination.FullRowSelect = true;
       this.lvDestination.HideSelection = false;
       this.lvDestination.Location = new System.Drawing.Point(176, 15);
@@ -207,19 +205,19 @@ namespace DiffCalc {
     }
 
     private void Results_Load(object sender, System.EventArgs e) {
-      Results_Resize(sender,e);
+      Results_Resize(sender, e);
     }
 
     private void Results_Resize(object sender, System.EventArgs e) {
-      int w = this.ClientRectangle.Width/2;
-      lvSource.Location = new Point(0,0);
+      int w = this.ClientRectangle.Width / 2;
+      lvSource.Location = new Point(0, 0);
       lvSource.Width = w;
       lvSource.Height = this.ClientRectangle.Height;
-      lvDestination.Location = new Point(w+1,0);
-      lvDestination.Width = this.ClientRectangle.Width - (w+1);
+      lvDestination.Location = new Point(w + 1, 0);
+      lvDestination.Width = this.ClientRectangle.Width - (w + 1);
       lvDestination.Height = this.ClientRectangle.Height;
     }
     #endregion Methods
   }
-  
+
 }

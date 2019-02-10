@@ -38,7 +38,7 @@ namespace HTML {
     /// <param name="delim">The delimiter character for the value.
     /// </param>
     public Attribute(string name, string value, char delim) {
-      fName  = name;
+      fName = name;
       fValue = value;
       fDelim = delim;
     }
@@ -60,18 +60,30 @@ namespace HTML {
 
     #region Properties
     public char Delim {
-      get { return fDelim; }
-      set { fDelim = value; }
+      get {
+        return fDelim;
+      }
+      set {
+        fDelim = value;
+      }
     }
 
     public string Name {
-      get { return fName; }
-      set { fName = value; }
+      get {
+        return fName;
+      }
+      set {
+        fName = value;
+      }
     }
 
     public string Value {
-      get { return fValue; }
-      set { fValue = value; }
+      get {
+        return fValue;
+      }
+      set {
+        fValue = value;
+      }
     }
     #endregion Properties
 
@@ -85,15 +97,15 @@ namespace HTML {
     /// </summary>
     public override string ToString() {
       StringBuilder sb = new StringBuilder();
-      if (Name!=null) {
+      if (Name != null) {
         sb.Append(Name);
         if (!String.IsNullOrEmpty(Value)) {
           sb.Append('=');
-          if (Delim!=0) {
+          if (Delim != 0) {
             sb.Append(Delim);
           }
           sb.Append(Value);
-          if (Delim!=0) {
+          if (Delim != 0) {
             sb.Append(Delim);
           }
         }
@@ -109,7 +121,7 @@ namespace HTML {
   /// HTTP headers, or XML.
   ///
   /// </summary>
-  public class HTMLParser  {
+  public class HTMLParser {
     #region Fields
     public bool skipMultipleSpace = true;
     /// <summary>
@@ -124,8 +136,12 @@ namespace HTML {
 
     #region Properties
     public string Source {
-      get { return fSource; }
-      set { fSource = value; }
+      get {
+        return fSource;
+      }
+      set {
+        fSource = value;
+      }
     }
     #endregion Properties
 
@@ -192,7 +208,7 @@ namespace HTML {
     /// <returns>True if the end of the source text has been
     /// reached.</returns>
     public bool Eof() {
-      return (idx>=fSource.Length);
+      return (idx >= fSource.Length);
     }
 
     /// <summary>
@@ -201,19 +217,19 @@ namespace HTML {
     /// <param name="peek">How many characters to peek ahead for.</param>
     /// <returns>The character that was retrieved.</returns>
     public char GetCurrentChar(int peek) {
-      return ((idx+peek)<fSource.Length ? fSource[idx+peek] : (char)0);
+      return ((idx + peek) < fSource.Length ? fSource[idx + peek] : (char)0);
     }
 
     public char GetCurrentChar() {
-      return (idx<fSource.Length ? fSource[idx] : (char)0);
+      return (idx < fSource.Length ? fSource[idx] : (char)0);
     }
 
     public bool IsTagStart() {
       // Is it a tag?
       char ch = GetCurrentChar();
-      if (ch =='<') {
+      if (ch == '<') {
         ch = char.ToUpper(GetCurrentChar(1));
-        if ((ch>='A') && (ch<='Z') || (ch=='!') || (ch=='/')) {
+        if ((ch >= 'A') && (ch <= 'Z') || (ch == '!') || (ch == '/')) {
           return true;
         }
       }
@@ -235,7 +251,7 @@ namespace HTML {
       char ch = GetCurrentChar();
       StringBuilder text = new StringBuilder();
       while ((!Eof()) && (!IsTagStart())) {
-        if (ch=='&') {
+        if (ch == '&') {
           text.Append(ParseEscape());
         }
         else {
@@ -275,7 +291,7 @@ namespace HTML {
     /// Parse the attribute value
     /// </summary>
     public void ParseAttributeValue(Attribute attr) {
-      if (GetCurrentChar()=='=') {
+      if (GetCurrentChar() == '=') {
         char ch;
         StringBuilder val = new StringBuilder();
         Advance();
@@ -286,7 +302,7 @@ namespace HTML {
           attr.Delim = delim;
           Advance();
           ch = GetCurrentChar();
-          while (ch!=delim) {
+          while (ch != delim) {
             val.Append(ch);
             Advance();
             ch = GetCurrentChar();
@@ -312,7 +328,7 @@ namespace HTML {
       StringBuilder escaped = new StringBuilder();
       escaped.Append(AdvanceCurrentChar()); // Skip &
       while (!Eof()) {
-        if (GetCurrentChar()==';') {
+        if (GetCurrentChar() == ';') {
           break;
         }
         escaped.Append(AdvanceCurrentChar());
@@ -335,12 +351,12 @@ namespace HTML {
       Tag tag = new Tag();
       char ch;
       // Is it a comment?
-      if ((GetCurrentChar()=='!') &&  (GetCurrentChar(1)=='-') && (GetCurrentChar(2)=='-')) {
+      if ((GetCurrentChar() == '!') && (GetCurrentChar(1) == '-') && (GetCurrentChar(2) == '-')) {
         while (!Eof()) {
-          if ((GetCurrentChar()=='-') && (GetCurrentChar(1)=='-') && (GetCurrentChar(2)=='>')) {
+          if ((GetCurrentChar() == '-') && (GetCurrentChar(1) == '-') && (GetCurrentChar(2) == '>')) {
             break;
           }
-          if (GetCurrentChar()!='\r') {
+          if (GetCurrentChar() != '\r') {
             name.Append(GetCurrentChar());
           }
           Advance();
@@ -357,7 +373,7 @@ namespace HTML {
         while (!Eof()) {
           ch = GetCurrentChar();
           if (first) {
-            if (ch=='/') {
+            if (ch == '/') {
               tag.Closing = true;
             }
             else {
@@ -365,7 +381,7 @@ namespace HTML {
             }
           }
           if (IsTagNameEnd(ch)) {
-            if (!first && (lastCh=='/')) {
+            if (!first && (lastCh == '/')) {
               tag.Closing = true;
             }
             break;
@@ -376,20 +392,20 @@ namespace HTML {
           first = false;
         }
         int len = name.Length;
-        if (len>0) {
+        if (len > 0) {
           if (name[0] == '/') {
             name.Remove(0, 1);
             len--;
           }
           if (len > 0) {
-            if (name[len-1]=='/') {
-              name.Remove(len-1, 1);
+            if (name[len - 1] == '/') {
+              name.Remove(len - 1, 1);
             }
           }
         }
         EatWhiteSpace();
         // Get the attributes
-        ch  = GetCurrentChar();
+        ch = GetCurrentChar();
         while (!IsTagEnd(ch)) {
           Attribute attr = new Attribute();
           ParseAttributeName(attr);
@@ -402,12 +418,12 @@ namespace HTML {
           tag.Add(attr);
           ch = GetCurrentChar();
         }
-        if (ch=='/') {
+        if (ch == '/') {
           //TODO check standard <tag attribute / missedgtsometing, / close the tag
           tag.Closing = true;
           Advance();
           EatWhiteSpace();
-          if (GetCurrentChar()=='>') {
+          if (GetCurrentChar() == '>') {
             Advance();
           }
         }
@@ -426,7 +442,7 @@ namespace HTML {
       if (HTML.HTMLParser.IsWhiteSpace(ch)) {
         char nxt = GetCurrentChar(1);
         if (!HTML.HTMLParser.IsWhiteSpace(nxt)) {
-          if ((ch == ' ') || (nxt!='<')) {
+          if ((ch == ' ') || (nxt != '<')) {
             buffer.Append(' ');
           }
         }
@@ -480,31 +496,45 @@ namespace HTML {
     /// A list of the attributes in this AttributeList
     /// </summary>
     public ArrayList Attributes {
-      get { return fAttributes; }
+      get {
+        return fAttributes;
+      }
     }
 
     public bool Closing {
-      get { return fClose; }
-      set { fClose = value; }
+      get {
+        return fClose;
+      }
+      set {
+        fClose = value;
+      }
     }
 
     /// <summary>
     /// How many attributes are in this AttributeList?
     /// </summary>
     public int Count {
-      get { return fAttributes.Count; }
+      get {
+        return fAttributes.Count;
+      }
     }
 
     /// <summary>
     /// Is collapsed Tag e.g. &lt;tag/&gt;
     /// </summary>
     public bool IsCollapsed {
-      get { return fOpen && fClose; }
+      get {
+        return fOpen && fClose;
+      }
     }
 
     public bool Opening {
-      get { return fOpen; }
-      set { fOpen = value; }
+      get {
+        return fOpen;
+      }
+      set {
+        fOpen = value;
+      }
     }
     #endregion Properties
 
@@ -513,7 +543,9 @@ namespace HTML {
     /// Access the individual attributes
     /// </summary>
     public Attribute this[int index] {
-      get { return (index<fAttributes.Count ? (Attribute)fAttributes[index]: null); }
+      get {
+        return (index < fAttributes.Count ? (Attribute)fAttributes[index] : null);
+      }
     }
 
     /// <summary>
@@ -522,8 +554,8 @@ namespace HTML {
     public Attribute this[string index] {
       get {
         index = index.ToLower();
-        int i= 0;
-        while (this[i]!=null) {
+        int i = 0;
+        while (this[i] != null) {
           if (this[i].Name.ToLower().Equals(index)) {
             return this[i];
           }
@@ -561,7 +593,7 @@ namespace HTML {
       rtn.Name = Name;
       rtn.Value = Value;
       rtn.Delim = Delim;
-      for (int i=0; i<fAttributes.Count; i++) {
+      for (int i = 0; i < fAttributes.Count; i++) {
         rtn.Add((Attribute)this[i].Clone());
       }
       return rtn;
@@ -572,7 +604,7 @@ namespace HTML {
     /// </summary>
     /// <returns>True if this AttributeList is empty, false otherwise.</returns>
     public bool IsEmpty() {
-      return (fAttributes.Count<=0);
+      return (fAttributes.Count <= 0);
     }
 
     /// <summary>
@@ -584,10 +616,14 @@ namespace HTML {
     /// <param name="name">The name of the Attribute to edit or create. Case-insensitive.</param>
     /// <param name="value">The value to be held in this attribute.</param>
     public void Set(string name, string value) {
-      if (name==null) { return; }
-      if (value==null) { value= ""; }
+      if (name == null) {
+        return;
+      }
+      if (value == null) {
+        value = "";
+      }
       Attribute a = this[name];
-      if (a==null) {
+      if (a == null) {
         a = new Attribute(name, value);
         Add(a);
       }
@@ -603,15 +639,15 @@ namespace HTML {
       StringBuilder sb = new StringBuilder();
       sb.Append("<");
       if (!fOpen && fClose) {
-          sb.Append("/");
+        sb.Append("/");
       }
       sb.Append(base.ToString());
-      if (fAttributes.Count>0) {
-          for (int i=0; i<fAttributes.Count; i++) {
-            sb.Append(' ');
-            sb.Append(fAttributes[i].ToString());
-          }
-       }
+      if (fAttributes.Count > 0) {
+        for (int i = 0; i < fAttributes.Count; i++) {
+          sb.Append(' ');
+          sb.Append(fAttributes[i].ToString());
+        }
+      }
       if (fOpen && fClose) {
         sb.Append("/");
       }
@@ -621,5 +657,5 @@ namespace HTML {
     #endregion Methods
 
   }
-  
+
 }

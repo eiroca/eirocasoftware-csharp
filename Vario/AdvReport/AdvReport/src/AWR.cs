@@ -16,36 +16,29 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 using System;
 using System.Threading;
-using System.Configuration;
-using System.Windows;
-using System.Windows.Forms;
-using System.Data;
-using System.Data.OleDb;
-
-using MySql.Data.MySqlClient;
 
 namespace Reporting {
 
   class AWR {
-    
+
     public static DBHelper db = new DBHelper();
-    
+
     public static MyQueue<string> paths = new MyQueue<string>();
     public static MyQueue<EventItem> events = new MyQueue<EventItem>();
 
     private static LogCollector logCollector = new LogCollector(paths, events);
     private static TEDA teda = new TEDA(events);
-        
+
     public static void Main(string[] args) {
-            
+
       Tokenizer tokenizer = new Tokenizer();
-       
+
       URIItem uri = tokenizer.Tokenize(new Uri("http://www.eiroca.net/path/index.html?a=2#frag"));
-              
+
 
       logCollector.Start();
       teda.Start();
-      
+
       paths.Insert("C:\\temp");
 
       bool a;
@@ -59,10 +52,10 @@ namespace Reporting {
 
       logCollector.Stop();
       teda.Stop();
-      
+
       Console.WriteLine("Press any key to continue . . . ");
       Console.ReadKey(true);
     }
   }
-  
+
 }

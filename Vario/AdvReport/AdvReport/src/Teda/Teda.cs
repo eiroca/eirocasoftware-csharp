@@ -14,22 +14,20 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-using System;
-using System.Data;
 
 namespace Reporting {
 
   public class TEDA : Coordinator {
-  
-		const int NUM_PROCESSORS = 4;
-    
+
+    const int NUM_PROCESSORS = 4;
+
     MyQueue<EventItem>[] processorQueues;
     MyQueue<EventItem> eventsQueue;
 
     MyQueue<Session> sessionQueue;
     MyQueue<TrafficEventItem> trafficQueue;
     SessionManager sm;
-    
+
     public TEDA(MyQueue<EventItem> events) {
       eventsQueue = events;
       processorQueues = new MyQueue<EventItem>[NUM_PROCESSORS];
@@ -37,7 +35,7 @@ namespace Reporting {
       trafficQueue = new MyQueue<TrafficEventItem>();
 
       int p = 0;
-      workers = new IWorkingElement[1+1+1+1+NUM_PROCESSORS];
+      workers = new IWorkingElement[1 + 1 + 1 + 1 + NUM_PROCESSORS];
       sm = new SessionManager(sessionQueue);
       workers[p] = sm;
       p++;
@@ -47,17 +45,17 @@ namespace Reporting {
       p++;
       workers[p] = new SessionFixup("SF", sessionQueue);
       p++;
-      for (int i=0; i<NUM_PROCESSORS; i++) {
+      for (int i = 0; i < NUM_PROCESSORS; i++) {
         processorQueues[i] = new MyQueue<EventItem>();
-        workers[p] = new EventProcessor("EP-"+i, processorQueues[i], sm, trafficQueue);
+        workers[p] = new EventProcessor("EP-" + i, processorQueues[i], sm, trafficQueue);
         p++;
       }
     }
 
     override public bool IsFinished() {
       return eventsQueue.IsEmpty() && sessionQueue.IsEmpty() && base.IsFinished();
-		}
+    }
 
   }
-  
+
 }

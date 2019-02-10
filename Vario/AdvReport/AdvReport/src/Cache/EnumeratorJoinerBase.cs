@@ -21,6 +21,7 @@ namespace GlynnTucker.Cache
         internal const int MAX_LOCK_WAIT = 10000; // milliseconds
 
         // if null, the state of the enumeratorjoiner is invalid (ie it 
+        // if null, the state of the enumeratorjoiner is invalid (ie it 
         // points to before the first item or after the last item).
         protected int? currentEnumerator = null;
         protected object currentObject;

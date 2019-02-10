@@ -67,38 +67,38 @@ namespace WikiHelper.lib.WikiMedia {
     #region Fields
     public List<WikiHeader> headers = new List<WikiHeader>();
     public WikiContainer rowData = new WikiContainer();
-    public Char[] SEP = new Char [] {'\n'};
+    public Char[] SEP = new Char[] { '\n' };
     public string title;
     WikiHeader header = null;
     #endregion Fields
-  
+
     #region Constructors
     public WikiDocument(string title, string text) {
       this.title = title;
       header = null;
       string[] rows = text.Split(SEP);
-      for (int i=0; i<rows.Length; i++) {
+      for (int i = 0; i < rows.Length; i++) {
         ProcessRow(rows[i]);
       }
     }
     #endregion Constructors
-  
+
     #region Methods
-  
+
     public WikiHeader FindHeader(int level, string name) {
-      if (name!=null) {
-        for (int i = 0; i < headers.Count-1; i++) {
+      if (name != null) {
+        for (int i = 0; i < headers.Count - 1; i++) {
           WikiHeader header = headers[i];
-          if ((header.level==level) && (name.Equals(header.name))) {
+          if ((header.level == level) && (name.Equals(header.name))) {
             return header;
           }
         }
       }
       return null;
     }
-  
-    public WikiHeader FindHeader( string name) {
-      if (name!=null) {
+
+    public WikiHeader FindHeader(string name) {
+      if (name != null) {
         for (int i = 0; i < headers.Count; i++) {
           WikiHeader header = headers[i];
           if (name.Equals(header.name)) {
@@ -108,13 +108,13 @@ namespace WikiHelper.lib.WikiMedia {
       }
       return null;
     }
-  
+
     public void ProcessHeaderRow(string row) {
       WikiHeader newHeader = new WikiHeader();
       int lev = 0;
       int state = 0;
       StringBuilder name = new StringBuilder();
-      for (int ci = 0; ci<row.Length; ci++) {
+      for (int ci = 0; ci < row.Length; ci++) {
         if (row[ci] == '=') {
           if (state == 0) {
             lev++;
@@ -124,10 +124,10 @@ namespace WikiHelper.lib.WikiMedia {
           }
         }
         else {
-          if (state==0) {
+          if (state == 0) {
             state = 1;
           }
-          if (state==1) {
+          if (state == 1) {
             name.Append(row[ci]);
           }
         }
@@ -137,14 +137,14 @@ namespace WikiHelper.lib.WikiMedia {
       headers.Add(newHeader);
       header = newHeader;
     }
-  
+
     public void ProcessRow(string row) {
       string trimmed = row.Trim();
       if (trimmed.StartsWith("=")) {
         ProcessHeaderRow(trimmed);
       }
       else {
-        if (header!=null) {
+        if (header != null) {
           header.Add(row);
         }
         else {
@@ -152,19 +152,19 @@ namespace WikiHelper.lib.WikiMedia {
         }
       }
     }
-  
+
     public override string ToString() {
       StringBuilder sb = new StringBuilder(1024);
       for (int i = 0; i < rowData.text.Count; i++) {
         sb.Append(rowData.text[i].ToString()).Append('\n');
       }
       for (int i = 0; i < headers.Count; i++) {
-          WikiHeader header = headers[i];
-          sb.Append(header.ToString());
-          }
-      return sb.ToString();
+        WikiHeader header = headers[i];
+        sb.Append(header.ToString());
       }
-  
+      return sb.ToString();
+    }
+
     #endregion Methods
   }
 
@@ -173,12 +173,12 @@ namespace WikiHelper.lib.WikiMedia {
     public int level;
     public string name;
     #endregion Fields
-  
+
     #region Constructors
     public WikiHeader() {
     }
     #endregion Constructors
-  
+
     #region Methods
     public string Format(bool head, bool raw, bool pack, string sep) {
       StringBuilder sb = new StringBuilder();
@@ -195,14 +195,14 @@ namespace WikiHelper.lib.WikiMedia {
       if (raw) {
         for (int i = 0; i < text.Count; i++) {
           string row = text[i].ToString();
-          if (!(pack && String.IsNullOrEmpty(row)))  {
+          if (!(pack && String.IsNullOrEmpty(row))) {
             sb.Append(row).Append(sep);
           }
         }
       }
       return sb.ToString();
     }
-  
+
     public override string ToString() {
       return Format(true, true, false, "\n");
     }

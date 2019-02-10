@@ -13,7 +13,6 @@ namespace WikiHelper.lib.WikiMedia {
   using System;
   using System.Collections;
   using System.Drawing;
-  using System.Net;
   using System.Net.Security;
   using System.Security.Cryptography.X509Certificates;
   using System.Text.RegularExpressions;
@@ -43,7 +42,7 @@ namespace WikiHelper.lib.WikiMedia {
       this.WikiURL = WikiURL;
       this.WikiDomain = WikiDomain;
       // System.Net.ServicePointManager.CertificatePolicy = new MyPolicy();
-      System.Net.ServicePointManager.ServerCertificateValidationCallback += delegate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) {
+      System.Net.ServicePointManager.ServerCertificateValidationCallback += delegate (object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) {
         return true;
       };
       defCategory = aDefCategory;
@@ -56,21 +55,21 @@ namespace WikiHelper.lib.WikiMedia {
 
     #region Methods
     public void CreatePages(string template, string[] lines, WikiMedia.ExportNotify notify) {
-      char[] sep = {'\t'};
+      char[] sep = { '\t' };
       string[] val = null;
-      for (int i=0; i<lines.Length; i++) {
+      for (int i = 0; i < lines.Length; i++) {
         string[] fld = lines[i].Split(sep);
         val = new string[fld.Length];
         string pageName = GetPageName(fld[0].Trim());
         string msg = pageName;
         if (!string.IsNullOrEmpty(pageName)) {
           int cnt = fld.Length;
-          for (int j=0; j<val.Length; j++) {
+          for (int j = 0; j < val.Length; j++) {
             string vl = null;
-            if (j<fld.Length) {
+            if (j < fld.Length) {
               vl = fld[j];
             }
-            if (vl==null) {
+            if (vl == null) {
               vl = "";
             }
             val[j] = vl;
@@ -95,8 +94,8 @@ namespace WikiHelper.lib.WikiMedia {
     }
 
     public string GetPageName(string name) {
-      if (name.IndexOf(':')==-1) {
-        name = defCategory +":"+name;
+      if (name.IndexOf(':') == -1) {
+        name = defCategory + ":" + name;
       }
       return name;
     }
@@ -108,7 +107,7 @@ namespace WikiHelper.lib.WikiMedia {
     }
 
     public void LogIn() {
-      if (username!=null) {
+      if (username != null) {
         site = new Site(WikiURL, username, password, WikiDomain);
       }
       else {
@@ -122,7 +121,7 @@ namespace WikiHelper.lib.WikiMedia {
         if (!String.IsNullOrEmpty(pageName)) {
           Page page = new Page(site, pageName);
           page.Load();
-          if (!String.IsNullOrEmpty(page.text)){
+          if (!String.IsNullOrEmpty(page.text)) {
             string text = page.text.Trim();
             page.text = text;
             text = DoRegex(page.text, re, replaces);
@@ -135,18 +134,18 @@ namespace WikiHelper.lib.WikiMedia {
             }
             text = doc.ToString().Trim();
             if (!text.Equals(page.text)) {
-              notify("W\t"+pageName+"\tchanged \n");
+              notify("W\t" + pageName + "\tchanged \n");
               if (preview) {
-                char[] sep = {'\n'};
+                char[] sep = { '\n' };
                 IDiffList oldText = new DiffList_String(page.text, sep);
                 IDiffList newText = new DiffList_String(text, sep);
                 double time = 0;
                 DiffEngine de = new DiffEngine();
-                time = de.ProcessDiff(oldText,newText);
+                time = de.ProcessDiff(oldText, newText);
                 ArrayList rep = de.DiffReport();
-                Results dlg = new Results(oldText,newText,rep,time);
+                Results dlg = new Results(oldText, newText, rep, time);
                 dlg.Size = new Size(1000, 700);
-                dlg.ShowInTaskbar=false;
+                dlg.ShowInTaskbar = false;
                 dlg.StartPosition = FormStartPosition.Manual;
                 dlg.ShowDialog();
                 dlg.Dispose();
@@ -157,16 +156,16 @@ namespace WikiHelper.lib.WikiMedia {
                   page.Save();
                 }
                 catch (Exception e) {
-                  notify("E\t"+pageName+"\t"+e.Message+"\n");
+                  notify("E\t" + pageName + "\t" + e.Message + "\n");
                 }
               }
             }
             else {
-              notify("N\t"+pageName+"\t\n");
+              notify("N\t" + pageName + "\t\n");
             }
           }
           else {
-            notify("I\t"+pageName+"\t\n");
+            notify("I\t" + pageName + "\t\n");
           }
         }
       }
@@ -175,7 +174,7 @@ namespace WikiHelper.lib.WikiMedia {
     public void Replace(string category, string[,] replaces, WikiMedia.ExportNotify notify) {
       Regex[] re = CalcRegex(replaces);
       PageList pl = GetPages(category);
-      foreach(Page page in pl) {
+      foreach (Page page in pl) {
         page.Load();
         string text = DoRegex(page.text, re, replaces);
         if (!text.Equals(page.text)) {
@@ -189,20 +188,20 @@ namespace WikiHelper.lib.WikiMedia {
     private Regex[] CalcRegex(string[,] replaces) {
       int len = replaces.GetLength(0);
       Regex[] re = new Regex[len];
-      for (int i = 0; i<len; i++) {
-        re[i] = new Regex(replaces[i,0], RegexOptions.Compiled | RegexOptions.Singleline);
+      for (int i = 0; i < len; i++) {
+        re[i] = new Regex(replaces[i, 0], RegexOptions.Compiled | RegexOptions.Singleline);
       }
       return re;
     }
 
     private string DoRegex(string text, Regex[] re, string[,] replaces) {
-      for (int i = 0; i<re.Length; i++) {
-        text = re[i].Replace(text, replaces[i,1]);
+      for (int i = 0; i < re.Length; i++) {
+        text = re[i].Replace(text, replaces[i, 1]);
       }
       return text;
     }
     #endregion Methods
-    
+
   }
-  
+
 }

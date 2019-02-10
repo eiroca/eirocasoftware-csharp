@@ -14,35 +14,33 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-using System;
 using System.IO;
-using System.Collections.Generic;
 
 namespace Reporting {
   /// <summary>
   /// Description of Class1.
   /// </summary>
   public class DirectoryScanner : Worker<string> {
-    
-    MyQueue<FileItem>outQueue;
-    
+
+    MyQueue<FileItem> outQueue;
+
     public DirectoryScanner(string aName, MyQueue<string> inQueue, MyQueue<FileItem> outQueue) : base(aName, inQueue) {
       this.outQueue = outQueue;
     }
 
     public void Scan(string aDirectory) {
       string[] files = Directory.GetFiles(aDirectory);
-      for (int i=0; i<files.Length; i++) {
+      for (int i = 0; i < files.Length; i++) {
         string file = files[i];
         if (File.Exists(file)) {
-          StreamReader aFile =  new StreamReader(file);
+          StreamReader aFile = new StreamReader(file);
           string line;
           do {
             line = aFile.ReadLine();
             int a = line.IndexOf(" 200 ");
           }
-          while ((line!=null) && (line.IndexOf(" 200 ") == -1));
-          if (line!=null) {
+          while ((line != null) && (line.IndexOf(" 200 ") == -1));
+          if (line != null) {
             FileItem fi = new FileItem();
             if (line.EndsWith("\"")) {
               fi.type = LogFormat.COMBINED;
@@ -57,12 +55,12 @@ namespace Reporting {
         }
       }
     }
-    
+
     override public bool Process(string path) {
       Scan(path);
       return true;
     }
-    
+
   }
-  
+
 }

@@ -156,28 +156,28 @@ namespace WikiHelper {
       StreamWriter writer = new StreamWriter(outFile);
       writer.WriteLine(outlookHeader);
       PageList pl = wiki.GetPages(category);
-      foreach(Page page in pl) {
+      foreach (Page page in pl) {
         page.Load();
         string text = page.text;
         // Decodifica Company
         int compBase = defContatto.Length;
         string[] cats = page.GetAllCategories(false);
         ArrayList comp = new ArrayList();
-        for (int i=0; i<cats.Length; i++) {
+        for (int i = 0; i < cats.Length; i++) {
           if (!cats[i].Equals("Rubrica")) {
             comp.Add(cats[i]);
           }
         }
-        if (comp.Count==0) {
+        if (comp.Count == 0) {
           comp.Add("");
         }
-        string[] vals = new string[defContatto.Length+comp.Count];
+        string[] vals = new string[defContatto.Length + comp.Count];
         // Copia company
-        for (int i=0; i<comp.Count; i++) {
-          vals[compBase+i] = comp[i].ToString();
+        for (int i = 0; i < comp.Count; i++) {
+          vals[compBase + i] = comp[i].ToString();
         }
         // Estrai campi
-        for (int i=0; i<defContatto.Length; i++) {
+        for (int i = 0; i < defContatto.Length; i++) {
           Match m = rRules[i].Match(text);
           if (m.Success) {
             vals[i] = m.Groups[1].Captures[0].ToString().Trim();
@@ -191,7 +191,7 @@ namespace WikiHelper {
           vals[7] = vals[8];
           vals[8] = "";
         }
-        string[] tels = {"", "", ""};
+        string[] tels = { "", "", "" };
         int telCnt = 0;
         if (!String.IsNullOrEmpty(vals[9])) {
           tels[telCnt] = vals[9];
@@ -205,12 +205,12 @@ namespace WikiHelper {
           tels[telCnt] = vals[11];
           telCnt++;
         }
-        if (telCnt==1) {
+        if (telCnt == 1) {
           vals[9] = "";
           vals[10] = tels[0];
           vals[11] = "";
         }
-        else if (telCnt==2) {
+        else if (telCnt == 2) {
           vals[9] = "";
           vals[10] = tels[0];
           vals[11] = tels[1];
@@ -227,32 +227,32 @@ namespace WikiHelper {
 
     protected void SetupContacts() {
       rRules = new Regex[defContatto.Length];
-      for (int i=0; i<defContatto.Length; i++) {
+      for (int i = 0; i < defContatto.Length; i++) {
         rRules[i] = new Regex(String.Format("[|]{0}=(.*)", defContatto[i]), RegexOptions.Compiled);
       }
       StringBuilder sbHeader = new StringBuilder();
       StringBuilder sbFormat = new StringBuilder();
       mapping = new int[outlook2contatto.Length / 2];
-      for (int i=0; i<outlook2contatto.Length; i += 2) {
-        string oF = outlook2contatto[i  ];
-        string rF = outlook2contatto[i+1];
-        if (i!=0) {
+      for (int i = 0; i < outlook2contatto.Length; i += 2) {
+        string oF = outlook2contatto[i];
+        string rF = outlook2contatto[i + 1];
+        if (i != 0) {
           sbHeader.Append(',');
           sbFormat.Append(',');
         }
         sbHeader.Append('"').Append(oF).Append('"');
         if (!String.IsNullOrEmpty(rF)) {
           int idx = -1;
-          for (int j=0; j<defContatto.Length; j++) {
+          for (int j = 0; j < defContatto.Length; j++) {
             if (defContatto[j].Equals(rF)) {
               idx = j;
               break;
             }
           }
-          if (rF.Equals("Company")){
+          if (rF.Equals("Company")) {
             idx = IDX_COMPANY;
           }
-          if (idx>=0) {
+          if (idx >= 0) {
             sbFormat.Append("\"{").Append(idx).Append("}\"");
           }
         }
@@ -261,7 +261,7 @@ namespace WikiHelper {
       outlookFormat = sbFormat.ToString();
     }
     #endregion Methods
-    
+
   }
-    
+
 }

@@ -14,7 +14,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-using System;   
 using System.Configuration;
 
 namespace Reporting {
@@ -31,16 +30,20 @@ namespace Reporting {
     Configuration _Config;
 
     #region ConfigurationProperties
-    
+
 
     /// <summary>
     /// Collection of <c>Class1Element(s)</c> 
     /// A custom XML section for an applications configuration file.
     /// </summary>
-    [ConfigurationProperty("exampleAttribute", DefaultValue="exampleValue")]
+    [ConfigurationProperty("exampleAttribute", DefaultValue = "exampleValue")]
     public string ExampleAttribute {
-      get { return (string) this["exampleAttribute"]; }
-      set { this["exampleAttribute"] = value; }
+      get {
+        return (string)this["exampleAttribute"];
+      }
+      set {
+        this["exampleAttribute"] = value;
+      }
     }
 
 
@@ -49,24 +52,24 @@ namespace Reporting {
     /// <summary>
     /// Private Constructor used by our factory method.
     /// </summary>
-    private LogCollectorConfig () : base () {
+    private LogCollectorConfig() : base() {
       // Allow this section to be stored in user.app. By default this is forbidden.
       this.SectionInformation.AllowExeDefinition = ConfigurationAllowExeDefinition.MachineToLocalUser;
     }
 
     #region Public Methods
-    
+
     /// <summary>
     /// Saves the configuration to the config file.
     /// </summary>
     public void Save() {
       _Config.Save();
     }
-    
+
     #endregion
-    
+
     #region Static Members
-    
+
     /// <summary>
     /// Gets the current applications &lt;Class1&gt; section.
     /// </summary>
@@ -77,7 +80,7 @@ namespace Reporting {
     /// <returns>
     /// The configuration file's &lt;Class1&gt; section.
     /// </returns>
-    public static LogCollectorConfig GetSection (ConfigurationUserLevel ConfigLevel) {
+    public static LogCollectorConfig GetSection(ConfigurationUserLevel ConfigLevel) {
       Configuration Config = ConfigurationManager.OpenExeConfiguration(ConfigLevel);
       LogCollectorConfig settings;
       settings = (LogCollectorConfig)Config.GetSection("LogCollector");
@@ -88,7 +91,7 @@ namespace Reporting {
       settings._Config = Config;
       return settings;
     }
-    
+
     #endregion
   }
 }

@@ -19,9 +19,9 @@ using System;
 using Reporting.Exort;
 
 namespace Reporting {
- 
-	public class SessionFixup : Worker<Session> {
-    
+
+  public class SessionFixup : Worker<Session> {
+
     MyQueue<Session> sessionQueue;
     Piwik db;
 
@@ -32,11 +32,11 @@ namespace Reporting {
     }
 
     override public bool Process(Session s) {
-      Console.WriteLine("Session "+s.user);
-//      db.flush(s);
+      Console.WriteLine("Session " + s.user);
+      //      db.flush(s);
       return true;
     }
-    
+
   }
-  
+
 }

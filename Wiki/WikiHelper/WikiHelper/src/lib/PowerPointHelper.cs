@@ -1,22 +1,20 @@
 #region Header
-/**
- * (C) 2006-2009 eIrOcA (eNrIcO Croce & sImOnA Burzio)
- *
- * This program is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation; either version 3 of the License, or (at your option) any later
- * version.
- */
+
 #endregion Header
 
+using Microsoft.Office.Core;
+/**
+* (C) 2006-2009 eIrOcA (eNrIcO Croce & sImOnA Burzio)
+*
+* This program is free software; you can redistribute it and/or modify it under
+* the terms of the GNU General Public License as published by the Free Software
+* Foundation; either version 3 of the License, or (at your option) any later
+* version.
+*/
 namespace WikiHelper {
-  using System;
 
-  using Microsoft.Office.Interop;
-  using Microsoft.Office.Core;
-  
   public class Presentation {
-    
+
     #region Fields
     public const string SEP = "\r";
     static Microsoft.Office.Interop.PowerPoint.Application powerpoint;
@@ -44,14 +42,14 @@ namespace WikiHelper {
     public Microsoft.Office.Interop.PowerPoint.Slide Add(Microsoft.Office.Interop.PowerPoint.PpSlideLayout layout, string title) {
       Microsoft.Office.Interop.PowerPoint.Slide slide;
       Microsoft.Office.Interop.PowerPoint.TextRange textRange;
-      slide = slides.Add(slides.Count+1, layout);
+      slide = slides.Add(slides.Count + 1, layout);
       textRange = slide.Shapes[1].TextFrame.TextRange;
       textRange.Text = title;
       return slide;
     }
 
     public void Close() {
-      if (presentation !=null) {
+      if (presentation != null) {
         presentation.Close();
         slides = null;
         presentation = null;
@@ -59,7 +57,7 @@ namespace WikiHelper {
     }
 
     public void ClosePowerPoint() {
-      if (powerpoint !=null) {
+      if (powerpoint != null) {
         // Reenable Office Assisant, if it was on:
         if (bAssistantOn) {
           powerpoint.Assistant.On = true;
@@ -72,7 +70,7 @@ namespace WikiHelper {
     }
 
     public void Create(string strTemplate) {
-      if (powerpoint==null) {
+      if (powerpoint == null) {
         OpenPowerPoint();
       }
       //Create a new presentation based on a template.
@@ -93,7 +91,7 @@ namespace WikiHelper {
       presentation.SaveAs(path, Microsoft.Office.Interop.PowerPoint.PpSaveAsFileType.ppSaveAsPresentation, Microsoft.Office.Core.MsoTriState.msoFalse);
     }
     #endregion Methods
-    
+
   }
-  
+
 }

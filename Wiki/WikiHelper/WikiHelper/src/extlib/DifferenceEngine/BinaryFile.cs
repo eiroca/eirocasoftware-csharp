@@ -1,6 +1,5 @@
 namespace DifferenceEngine {
   using System;
-  using System.Collections;
   using System.IO;
 
   public class DiffList_BinaryFile : IDiffList {
@@ -22,8 +21,13 @@ namespace DifferenceEngine {
         throw ex;
       }
       finally {
-        if (br != null) br.Close();
-        if (fs != null) fs.Close();
+        if (br != null) {
+          br.Close();
+        }
+
+        if (fs != null) {
+          fs.Close();
+        }
       }
     }
     #endregion Constructors
@@ -37,7 +41,7 @@ namespace DifferenceEngine {
       return _byteList[index];
     }
     #endregion Methods
-    
+
   }
-  
+
 }

@@ -1,8 +1,6 @@
 namespace DiffCalc {
   using System;
   using System.Collections;
-  using System.ComponentModel;
-  using System.Drawing;
   using System.IO;
   using System.Windows.Forms;
 
@@ -11,7 +9,7 @@ namespace DiffCalc {
   /// <summary>
   /// Summary description for Form1.
   /// </summary>
-  public class MainForm : System.Windows.Forms.Form  {
+  public class MainForm : System.Windows.Forms.Form {
     #region Fields
     private System.Windows.Forms.CheckBox chkBinary;
     private System.Windows.Forms.Button cmdClose;
@@ -44,13 +42,13 @@ namespace DiffCalc {
     /// <summary>
     /// Clean up any resources being used.
     /// </summary>
-    protected override void Dispose( bool disposing )  {
+    protected override void Dispose(bool disposing) {
       if (disposing) {
         if (components != null) {
           components.Dispose();
         }
       }
-      base.Dispose( disposing );
+      base.Dispose(disposing);
     }
 
     /// <summary>
@@ -71,22 +69,22 @@ namespace DiffCalc {
       }
       catch (Exception ex) {
         this.Cursor = Cursors.Default;
-        MessageBox.Show(ex.Message,"File Error");
+        MessageBox.Show(ex.Message, "File Error");
         return;
       }
       try {
         double time = 0;
         DiffEngine de = new DiffEngine();
-        time = de.ProcessDiff(sLF,dLF,_level);
+        time = de.ProcessDiff(sLF, dLF, _level);
         ArrayList rep = de.DiffReport();
-        BinaryResults dlg = new BinaryResults(rep,time);
+        BinaryResults dlg = new BinaryResults(rep, time);
         dlg.ShowDialog();
         dlg.Dispose();
       }
       catch (Exception ex) {
         this.Cursor = Cursors.Default;
         string tmp = string.Format("{0}{1}{1}***STACK***{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace);
-        MessageBox.Show(tmp,"Compare Error");
+        MessageBox.Show(tmp, "Compare Error");
         return;
       }
       this.Cursor = Cursors.Default;
@@ -100,12 +98,12 @@ namespace DiffCalc {
       string sFile = txtSource.Text.Trim();
       string dFile = txtDestination.Text.Trim();
       if (!ValidFile(sFile)) {
-        MessageBox.Show("Source file name is invalid.","Invalid File");
+        MessageBox.Show("Source file name is invalid.", "Invalid File");
         txtSource.Focus();
         return;
       }
       if (!ValidFile(dFile)) {
-        MessageBox.Show("Destination file name is invalid.","Invalid File");
+        MessageBox.Show("Destination file name is invalid.", "Invalid File");
         txtDestination.Focus();
         return;
       }
@@ -121,10 +119,10 @@ namespace DiffCalc {
         }
       }
       if (chkBinary.Checked) {
-        BinaryDiff(sFile,dFile);
+        BinaryDiff(sFile, dFile);
       }
       else {
-        TextDiff(sFile,dFile);
+        TextDiff(sFile, dFile);
       }
     }
 
@@ -139,11 +137,11 @@ namespace DiffCalc {
     private string GetFileName() {
       string fname = string.Empty;
       OpenFileDialog dlg = new OpenFileDialog();
-      dlg.InitialDirectory = "c:\\" ;
-      dlg.Filter = "All files (*.*)|*.*" ;
-      dlg.FilterIndex = 1 ;
-      dlg.RestoreDirectory = true ;
-      if(dlg.ShowDialog() == DialogResult.OK) {
+      dlg.InitialDirectory = "c:\\";
+      dlg.Filter = "All files (*.*)|*.*";
+      dlg.FilterIndex = 1;
+      dlg.RestoreDirectory = true;
+      if (dlg.ShowDialog() == DialogResult.OK) {
         fname = dlg.FileName;
       }
       return fname;
@@ -317,22 +315,22 @@ namespace DiffCalc {
       }
       catch (Exception ex) {
         this.Cursor = Cursors.Default;
-        MessageBox.Show(ex.Message,"File Error");
+        MessageBox.Show(ex.Message, "File Error");
         return;
       }
       try {
         double time = 0;
         DiffEngine de = new DiffEngine();
-        time = de.ProcessDiff(sLF,dLF,_level);
+        time = de.ProcessDiff(sLF, dLF, _level);
         ArrayList rep = de.DiffReport();
-        Results dlg = new Results(sLF,dLF,rep,time);
+        Results dlg = new Results(sLF, dLF, rep, time);
         dlg.ShowDialog();
         dlg.Dispose();
       }
       catch (Exception ex) {
         this.Cursor = Cursors.Default;
         string tmp = string.Format("{0}{1}{1}***STACK***{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace);
-        MessageBox.Show(tmp,"Compare Error");
+        MessageBox.Show(tmp, "Compare Error");
         return;
       }
       this.Cursor = Cursors.Default;
@@ -347,6 +345,6 @@ namespace DiffCalc {
       return false;
     }
     #endregion Methods
-    
+
   }
 }

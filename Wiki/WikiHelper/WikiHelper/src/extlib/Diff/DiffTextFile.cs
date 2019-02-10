@@ -47,7 +47,7 @@ namespace DiffCalcer {
 
     #region Constructors
     public TextLine(string str) {
-      Line = str.Replace("\t","    ");
+      Line = str.Replace("\t", "    ");
       _hash = str.GetHashCode();
     }
     #endregion Constructors
@@ -58,5 +58,5 @@ namespace DiffCalcer {
     }
     #endregion Methods
   }
-  
+
 }

@@ -15,17 +15,14 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 using System;
-using System.Data;
-using System.Data.Common;
-using System.Data.OleDb;
 
 using MySql.Data.MySqlClient;
 
 namespace Reporting.Exort {
-  
-  public class Piwik  {
-    
-    private MySqlConnection connection=null;
+
+  public class Piwik {
+
+    private MySqlConnection connection = null;
 
     private MySqlCommand findAction;
     private MySqlCommand addAction;
@@ -34,18 +31,18 @@ namespace Reporting.Exort {
     private MySqlCommand findHit;
     private MySqlCommand addHit;
 
-    string connectionString=null;
-    
+    string connectionString = null;
+
     public Piwik(string host, string database, string userId, string password) {
-      connectionString= 
-        "Server="+host+";"+
-        "Database="+database+";"+
-        "allow user variables=true;"+
-        "Uid="+userId+";"+
-        "Pwd="+password+";";
+      connectionString =
+        "Server=" + host + ";" +
+        "Database=" + database + ";" +
+        "allow user variables=true;" +
+        "Uid=" + userId + ";" +
+        "Pwd=" + password + ";";
 
       // Action
-      connection=new MySqlConnection(connectionString);
+      connection = new MySqlConnection(connectionString);
       findAction = new MySqlCommand();
       findAction.Connection = connection;
       findAction.CommandText = "SELECT idaction FROM piwik_log_action WHERE name = @action AND type = @type";
@@ -56,7 +53,7 @@ namespace Reporting.Exort {
       addAction.CommandText = "INSERT INTO piwik_log_action(name, type) VALUES (@action, @type); SELECT LAST_INSERT_ID() AS ID;";
       addAction.Parameters.Add("@action", MySqlDbType.String).Value = "";
       addAction.Parameters.Add("@type", MySqlDbType.Int32).Value = 1;
-      
+
       // Hit
       findHit = new MySqlCommand();
       findHit.Connection = connection;
@@ -115,11 +112,11 @@ namespace Reporting.Exort {
       addVisit.Parameters.Add("@location_browser_lang", MySqlDbType.String).Value = "en";
       addVisit.Parameters.Add("@location_country", MySqlDbType.String).Value = "it";
     }
-    
+
     public void Open() {
       connection.Open();
     }
-    
+
     public void Close() {
       connection.Close();
     }
@@ -130,7 +127,7 @@ namespace Reporting.Exort {
       findHit.Parameters["@idaction"].Value = idAction;
       findHit.Parameters["@idaction_ref"].Value = idRefer;
       Object res = findHit.ExecuteScalar();
-      if (res!=null) {
+      if (res != null) {
         result = Int32.Parse(res.ToString());
       }
       else {
@@ -149,7 +146,7 @@ namespace Reporting.Exort {
       findAction.Parameters["@action"].Value = action;
       findAction.Parameters["@type"].Value = 1;
       Object res = findAction.ExecuteScalar();
-      if (res!=null) {
+      if (res != null) {
         result = Int32.Parse(res.ToString());
       }
       else {
@@ -160,12 +157,12 @@ namespace Reporting.Exort {
       }
       return result;
     }
-    
+
     public int FindVisit(Session s, Hit actStr, Hit actEnd) {
       int result = 0;
       findVisit.Parameters["@user"].Value = s.user;
       Object res = findVisit.ExecuteScalar();
-      if (res!=null) {
+      if (res != null) {
         result = Int32.Parse(res.ToString());
       }
       else {
@@ -183,7 +180,7 @@ namespace Reporting.Exort {
         addVisit.Parameters["@visit_goal_converted"].Value = 0;
         addVisit.Parameters["@referer_type"].Value = 0;
         addVisit.Parameters["@referer_name"].Value = "";
-        if (actStr.refer!=null) {
+        if (actStr.refer != null) {
           addVisit.Parameters["@referer_url"].Value = actStr.refer.ToString();
         }
         else {
@@ -211,13 +208,13 @@ namespace Reporting.Exort {
       }
       return result;
     }
-    
+
     public void flush(Session s) {
       bool first = true;
       Hit idActStr = new Hit();
       Hit idActEnd = new Hit();
-      if (s.hits.Count>0) {
-        foreach(Hit hit in s.hits.Values) {
+      if (s.hits.Count > 0) {
+        foreach (Hit hit in s.hits.Values) {
           if (first) {
             idActStr = hit;
             first = false;
@@ -227,7 +224,7 @@ namespace Reporting.Exort {
         int idVisit = FindVisit(s, idActStr, idActEnd);
         int idAction;
         Int32 idRefer;
-        foreach(Hit hit in s.hits.Values) {
+        foreach (Hit hit in s.hits.Values) {
           idAction = FindAction(hit.reqURI.ToString());
           if (hit.refer == null) {
             idRefer = 0;
@@ -239,7 +236,7 @@ namespace Reporting.Exort {
         }
       }
     }
-    
+
   }
-  
+
 }

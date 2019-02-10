@@ -3,7 +3,9 @@ namespace DifferenceEngine {
   using System.Collections;
 
   #region Enumerations
-  public enum DiffEngineLevel {FastImperfect, Medium, SlowPerfect }
+  public enum DiffEngineLevel {
+    FastImperfect, Medium, SlowPerfect
+  }
   #endregion Enumerations
 
   public class DiffEngine {
@@ -33,13 +35,13 @@ namespace DifferenceEngine {
       //Deal with the special case of empty files
       if (dcount == 0) {
         if (scount > 0) {
-          retval.Add(DiffResultSpan.CreateDeleteSource(0,scount));
+          retval.Add(DiffResultSpan.CreateDeleteSource(0, scount));
         }
         return retval;
       }
       else {
         if (scount == 0) {
-          retval.Add(DiffResultSpan.CreateAddDestination(0,dcount));
+          retval.Add(DiffResultSpan.CreateAddDestination(0, dcount));
           return retval;
         }
       }
@@ -49,7 +51,7 @@ namespace DifferenceEngine {
       DiffResultSpan last = null;
       //Process each match record
       foreach (DiffResultSpan drs in _matchList) {
-        if ((!AddChanges(retval,curDest,drs.DestIndex,curSource,drs.SourceIndex))&&(last != null))  {
+        if ((!AddChanges(retval, curDest, drs.DestIndex, curSource, drs.SourceIndex)) && (last != null)) {
           last.AddLength(drs.Length);
         }
         else {
@@ -60,13 +62,13 @@ namespace DifferenceEngine {
         last = drs;
       }
       //Process any tail end data
-      AddChanges(retval,curDest,dcount,curSource,scount);
+      AddChanges(retval, curDest, dcount, curSource, scount);
       return retval;
     }
 
-    public double ProcessDiff(IDiffList source, IDiffList destination,DiffEngineLevel level) {
+    public double ProcessDiff(IDiffList source, IDiffList destination, DiffEngineLevel level) {
       _level = level;
-      return ProcessDiff(source,destination);
+      return ProcessDiff(source, destination);
     }
 
     public double ProcessDiff(IDiffList source, IDiffList destination) {
@@ -76,9 +78,9 @@ namespace DifferenceEngine {
       _matchList = new ArrayList();
       int dcount = _dest.Count();
       int scount = _source.Count();
-      if ((dcount > 0)&&(scount > 0)) {
+      if ((dcount > 0) && (scount > 0)) {
         _stateList = new DiffStateList(dcount);
-        ProcessRange(0,dcount - 1,0, scount - 1);
+        ProcessRange(0, dcount - 1, 0, scount - 1);
       }
       TimeSpan ts = DateTime.Now - dt;
       return ts.TotalSeconds;
@@ -91,46 +93,46 @@ namespace DifferenceEngine {
       int minDiff = 0;
       if (diffDest > 0) {
         if (diffSource > 0) {
-          minDiff = Math.Min(diffDest,diffSource);
-          report.Add(DiffResultSpan.CreateReplace(curDest,curSource,minDiff));
+          minDiff = Math.Min(diffDest, diffSource);
+          report.Add(DiffResultSpan.CreateReplace(curDest, curSource, minDiff));
           if (diffDest > diffSource) {
-            curDest+=minDiff;
-            report.Add(DiffResultSpan.CreateAddDestination(curDest,diffDest - diffSource));
+            curDest += minDiff;
+            report.Add(DiffResultSpan.CreateAddDestination(curDest, diffDest - diffSource));
           }
           else {
             if (diffSource > diffDest) {
-              curSource+= minDiff;
-              report.Add(DiffResultSpan.CreateDeleteSource(curSource,diffSource - diffDest));
+              curSource += minDiff;
+              report.Add(DiffResultSpan.CreateDeleteSource(curSource, diffSource - diffDest));
             }
           }
         }
         else {
-          report.Add(DiffResultSpan.CreateAddDestination(curDest,diffDest));
+          report.Add(DiffResultSpan.CreateAddDestination(curDest, diffDest));
         }
         retval = true;
       }
       else {
         if (diffSource > 0) {
-          report.Add(DiffResultSpan.CreateDeleteSource(curSource,diffSource));
+          report.Add(DiffResultSpan.CreateDeleteSource(curSource, diffSource));
           retval = true;
         }
       }
       return retval;
     }
 
-    private void GetLongestSourceMatch(DiffState curItem, int destIndex,int destEnd, int sourceStart,int sourceEnd) {
+    private void GetLongestSourceMatch(DiffState curItem, int destIndex, int destEnd, int sourceStart, int sourceEnd) {
       int maxDestLength = (destEnd - destIndex) + 1;
       int curLength = 0;
       int curBestLength = 0;
       int curBestIndex = -1;
       int maxLength = 0;
       for (int sourceIndex = sourceStart; sourceIndex <= sourceEnd; sourceIndex++) {
-        maxLength = Math.Min(maxDestLength,(sourceEnd - sourceIndex) + 1);
+        maxLength = Math.Min(maxDestLength, (sourceEnd - sourceIndex) + 1);
         if (maxLength <= curBestLength) {
           //No chance to find a longer one any more
           break;
         }
-        curLength = GetSourceMatchLength(destIndex,sourceIndex,maxLength);
+        curLength = GetSourceMatchLength(destIndex, sourceIndex, maxLength);
         if (curLength > curBestLength) {
           //This is the best match so far
           curBestIndex = sourceIndex;
@@ -151,7 +153,7 @@ namespace DifferenceEngine {
     private int GetSourceMatchLength(int destIndex, int sourceIndex, int maxLength) {
       int matchCount;
       for (matchCount = 0; matchCount < maxLength; matchCount++) {
-        if ( _dest.GetByIndex(destIndex + matchCount).CompareTo(_source.GetByIndex(sourceIndex + matchCount)) != 0 ) {
+        if (_dest.GetByIndex(destIndex + matchCount).CompareTo(_source.GetByIndex(sourceIndex + matchCount)) != 0) {
           break;
         }
       }
@@ -213,13 +215,13 @@ namespace DifferenceEngine {
       }
       else {
         int sourceIndex = bestItem.StartIndex;
-        _matchList.Add(DiffResultSpan.CreateNoChange(curBestIndex,sourceIndex,curBestLength));
+        _matchList.Add(DiffResultSpan.CreateNoChange(curBestIndex, sourceIndex, curBestLength));
         if (destStart < curBestIndex) {
           //Still have more lower destination data
           if (sourceStart < sourceIndex) {
             //Still have more lower source data
             // Recursive call to process lower indexes
-            ProcessRange(destStart, curBestIndex -1,sourceStart, sourceIndex -1);
+            ProcessRange(destStart, curBestIndex - 1, sourceStart, sourceIndex - 1);
           }
         }
         int upperDestStart = curBestIndex + curBestLength;
@@ -229,13 +231,13 @@ namespace DifferenceEngine {
           if (sourceEnd > upperSourceStart) {
             //set still have more upper source data
             // Recursive call to process upper indexes
-            ProcessRange(upperDestStart,destEnd,upperSourceStart,sourceEnd);
+            ProcessRange(upperDestStart, destEnd, upperSourceStart, sourceEnd);
           }
         }
       }
     }
     #endregion Methods
-    
+
   }
-  
+
 }

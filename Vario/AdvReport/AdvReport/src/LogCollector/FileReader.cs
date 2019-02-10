@@ -15,53 +15,52 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 using System;
-using System.Threading;
 using System.IO;
 
 namespace Reporting {
 
-	/// <summary>
-	/// Description of Class1.
-	/// </summary>
-	public class FileReader : Worker<FileItem> {
-	
-		MyQueue<RowItem>rowQueue;
-		MyQueue<FileItem>processedQueue;
+  /// <summary>
+  /// Description of Class1.
+  /// </summary>
+  public class FileReader : Worker<FileItem> {
 
-		public FileReader(string aName, MyQueue<FileItem> inQueue, MyQueue<RowItem> rowQueue, MyQueue<FileItem> processedQueue) : base(aName, inQueue) {
-			this.rowQueue = rowQueue;
-			this.processedQueue = processedQueue;
-		}
-		
-		override public bool Process(FileItem fileItem) {
+    MyQueue<RowItem> rowQueue;
+    MyQueue<FileItem> processedQueue;
+
+    public FileReader(string aName, MyQueue<FileItem> inQueue, MyQueue<RowItem> rowQueue, MyQueue<FileItem> processedQueue) : base(aName, inQueue) {
+      this.rowQueue = rowQueue;
+      this.processedQueue = processedQueue;
+    }
+
+    override public bool Process(FileItem fileItem) {
       Console.WriteLine(fileItem.path);
       bool ok = false;
       StreamReader file = null;
       try {
         try {
-        file =  new StreamReader(fileItem.path);
-        string line;
-        while((line = file.ReadLine()) != null) {
-          RowItem ri = new RowItem();
-          ri.type = fileItem.type;
-          ri.line = line;
-          rowQueue.Insert(ri);
+          file = new StreamReader(fileItem.path);
+          string line;
+          while ((line = file.ReadLine()) != null) {
+            RowItem ri = new RowItem();
+            ri.type = fileItem.type;
+            ri.line = line;
+            rowQueue.Insert(ri);
+          }
+          ok = true;
         }
-        ok = true;
-      }
-      finally {
-        if (file!=null) {
-          file.Close();
+        finally {
+          if (file != null) {
+            file.Close();
+          }
         }
       }
-		}
       catch {
       }
-      if (ok)  {
+      if (ok) {
         processedQueue.Insert(fileItem);
       }
       return ok;
     }
-	}
-	
+  }
+
 }

@@ -10,7 +10,6 @@
 #endregion Header
 
 namespace WikiHelper.lib.WikiMedia {
-  using System;
   using System.Collections.Generic;
   using System.Text;
 
@@ -29,17 +28,17 @@ namespace WikiHelper.lib.WikiMedia {
     #region Methods
     public override string ToString() {
       StringBuilder sb = new StringBuilder();
-      foreach(Element e in elements) {
+      foreach (Element e in elements) {
         sb.Append(e.ToString());
       }
       return sb.ToString();
     }
     #endregion Methods
-    
+
   }
 
   public class Document : Container {
-  
+
     #region Fields
     public List<Header> headers = new List<Header>();
     #endregion Fields
@@ -51,9 +50,9 @@ namespace WikiHelper.lib.WikiMedia {
 
     #region Methods
     public Header FindHeader(int level, string name) {
-      for (int i = 0; i < headers.Count-1; i++) {
+      for (int i = 0; i < headers.Count - 1; i++) {
         Header header = headers[i];
-        if ((header.level==level) && (header.name.Equals(name))) {
+        if ((header.level == level) && (header.name.Equals(name))) {
           return header;
         }
       }
@@ -61,7 +60,7 @@ namespace WikiHelper.lib.WikiMedia {
     }
 
     public Header FindHeader(string name) {
-      for (int i = 0; i < headers.Count-1; i++) {
+      for (int i = 0; i < headers.Count - 1; i++) {
         Header header = headers[i];
         if (header.name == null) {
           continue;
@@ -73,7 +72,7 @@ namespace WikiHelper.lib.WikiMedia {
       return null;
     }
     #endregion Methods
-    
+
   }
 
   public class Element {
@@ -99,7 +98,7 @@ namespace WikiHelper.lib.WikiMedia {
     public string name {
       get {
         string res = null;
-        if (title.Count>0) {
+        if (title.Count > 0) {
           res = title[0].ToString();
         }
         return res;
@@ -109,7 +108,7 @@ namespace WikiHelper.lib.WikiMedia {
 
     #region Methods
     public virtual bool isEmpty() {
-      return (elements.Count==0);
+      return (elements.Count == 0);
     }
 
     public override string ToString() {
@@ -119,7 +118,7 @@ namespace WikiHelper.lib.WikiMedia {
       return sb.ToString();
     }
     #endregion Methods
-    
+
   }
 
   public class HyperLink : Text {
@@ -134,19 +133,19 @@ namespace WikiHelper.lib.WikiMedia {
 
     #region Methods
     public override string ToString() {
-      return "["+base.ToString()+"]";
+      return "[" + base.ToString() + "]";
     }
     #endregion Methods
-    
+
   }
 
   public class List : Container {
-    
+
     #region Constructors
     public List(Container parent) : base(parent) {
     }
     #endregion Constructors
-    
+
   }
 
   public class ListItem : Text {
@@ -166,14 +165,14 @@ namespace WikiHelper.lib.WikiMedia {
 
     #region Methods
     public override string ToString() {
-      return "\t"+base.ToString();
+      return "\t" + base.ToString();
     }
     #endregion Methods
-    
+
   }
 
   public class NewLine : Element {
-  
+
     #region Constructors
     public NewLine() {
     }
@@ -184,7 +183,7 @@ namespace WikiHelper.lib.WikiMedia {
       return "\n";
     }
     #endregion Methods
-    
+
   }
 
   public class Paragraph : Container {
@@ -195,14 +194,14 @@ namespace WikiHelper.lib.WikiMedia {
 
     #region Methods
     public override string ToString() {
-      return base.ToString()+"\n";
+      return base.ToString() + "\n";
     }
     #endregion Methods
-    
+
   }
 
   public class Text : Element {
-    
+
     #region Fields
     public const int FMT_BOLD = 2;
     public const int FMT_ITALIC = 1;
@@ -275,7 +274,7 @@ namespace WikiHelper.lib.WikiMedia {
       return text.ToString();
     }
     #endregion Methods
-    
+
   }
-  
+
 }

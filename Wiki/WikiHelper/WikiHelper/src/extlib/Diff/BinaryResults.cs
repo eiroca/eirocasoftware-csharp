@@ -1,7 +1,6 @@
 namespace DiffCalc {
   using System;
   using System.Collections;
-  using System.ComponentModel;
   using System.Drawing;
   using System.Windows.Forms;
 
@@ -24,9 +23,9 @@ namespace DiffCalc {
     #endregion Fields
 
     #region Constructors
-    public BinaryResults(ArrayList al,double secs) {
+    public BinaryResults(ArrayList al, double secs) {
       InitializeComponent();
-      this.Text = string.Format("Binary Results: {0} secs.",secs.ToString("#0.00"));
+      this.Text = string.Format("Binary Results: {0} secs.", secs.ToString("#0.00"));
       ListViewItem lvi = null;
       foreach (DiffResultSpan drs in al) {
         lvi = new ListViewItem(drs.Status.ToString());
@@ -61,9 +60,9 @@ namespace DiffCalc {
     /// <summary>
     /// Clean up any resources being used.
     /// </summary>
-    protected override void Dispose(bool disposing)  {
+    protected override void Dispose(bool disposing) {
       if (disposing) {
-        if(components != null) {
+        if (components != null) {
           components.Dispose();
         }
       }
@@ -71,7 +70,7 @@ namespace DiffCalc {
     }
 
     private void BinaryResults_Load(object sender, System.EventArgs e) {
-      listView1_Resize(this,e);
+      listView1_Resize(this, e);
     }
 
     /// <summary>
@@ -88,7 +87,7 @@ namespace DiffCalc {
       //
       // listView1
       //
-      this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {this.columnHeader1, this.columnHeader2, this.columnHeader3, this.columnHeader4});
+      this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { this.columnHeader1, this.columnHeader2, this.columnHeader3, this.columnHeader4 });
       this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
       this.listView1.FullRowSelect = true;
       this.listView1.GridLines = true;
@@ -131,7 +130,7 @@ namespace DiffCalc {
     }
 
     private void listView1_Resize(object sender, System.EventArgs e) {
-      int w = Math.Max((listView1.Width - 20)/4,50);
+      int w = Math.Max((listView1.Width - 20) / 4, 50);
       foreach (ColumnHeader ch in listView1.Columns) {
         ch.Width = w;
       }
@@ -139,5 +138,5 @@ namespace DiffCalc {
     #endregion Methods
 
   }
-  
+
 }

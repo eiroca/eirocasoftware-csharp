@@ -16,7 +16,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 using System;
 using System.Threading;
-using System.Collections.Generic;
 
 namespace Reporting {
 
@@ -24,48 +23,48 @@ namespace Reporting {
     public int OK;
     public int KO;
   }
-  
-	public interface IWorkingElement {
+
+  public interface IWorkingElement {
     void Start();
     void Stop();
     bool IsFinished();
 
     string GetName();
-    
+
     WorkerStats Stats();
-    
+
   }
 
   public abstract class Coordinator : IWorkingElement {
-		
+
     protected IWorkingElement[] workers;
 
-		virtual public void Start() {
-		  foreach (IWorkingElement w in workers) {
-		    w.Start();
-		  }
-		}
+    virtual public void Start() {
+      foreach (IWorkingElement w in workers) {
+        w.Start();
+      }
+    }
 
-		virtual public void Stop() {
-		  foreach (IWorkingElement w in workers) {
-		    w.Stop();
-		    WorkerStats stats = w.Stats();
-		    Console.WriteLine(w.GetName()+"="+stats.OK +" "+stats.KO);
-		  }
-		}
-		
-		virtual public bool IsFinished() {
-		  bool _finished = true;  
-		  for (int i = 0; i<workers.Length & _finished; i++) {
-		    _finished &= workers[i].IsFinished();
-		  }
-			return _finished;
-		}
+    virtual public void Stop() {
+      foreach (IWorkingElement w in workers) {
+        w.Stop();
+        WorkerStats stats = w.Stats();
+        Console.WriteLine(w.GetName() + "=" + stats.OK + " " + stats.KO);
+      }
+    }
 
-		virtual public WorkerStats Stats() {
+    virtual public bool IsFinished() {
+      bool _finished = true;
+      for (int i = 0; i < workers.Length & _finished; i++) {
+        _finished &= workers[i].IsFinished();
+      }
+      return _finished;
+    }
+
+    virtual public WorkerStats Stats() {
       return new WorkerStats();
-		}
-    
+    }
+
     virtual public string GetName() {
       return "Coordinator";
     }
@@ -76,81 +75,81 @@ namespace Reporting {
 	/// Description of Interface1.
 	/// </summary>
 	public abstract class Worker<T> : IWorkingElement {
-		
-	  private string FName;
-	  
-		protected volatile bool _stopped = true;
-		protected volatile bool _working = false;
 
-		public WorkerStats stats = new WorkerStats();
-		
-		public string Name {
-		  get {
-		    return FName;
-		  }
-		}
-		protected MyQueue<T> inQueue;
+    private string FName;
 
-		public Worker(string aName, MyQueue<T> aQueue) {
-			FName = aName;
-			inQueue = aQueue;
-		}
-	
-		virtual public void Start() {
-			lock (this) {
-				if (_stopped) {
-					_stopped = false;
-					new Thread(Loop).Start();
-				}
-			}
-		}
+    protected volatile bool _stopped = true;
+    protected volatile bool _working = false;
 
-		virtual public bool Process(T obj) {
-      Console.WriteLine(Name+" working "+obj);
+    public WorkerStats stats = new WorkerStats();
+
+    public string Name {
+      get {
+        return FName;
+      }
+    }
+    protected MyQueue<T> inQueue;
+
+    public Worker(string aName, MyQueue<T> aQueue) {
+      FName = aName;
+      inQueue = aQueue;
+    }
+
+    virtual public void Start() {
+      lock (this) {
+        if (_stopped) {
+          _stopped = false;
+          new Thread(Loop).Start();
+        }
+      }
+    }
+
+    virtual public bool Process(T obj) {
+      Console.WriteLine(Name + " working " + obj);
       return true;
-		}
+    }
 
-		virtual public void Loop() {
-			while (!_stopped) {
-				T obj = inQueue.Remove();
-   			if (obj != null) {
-				  _working = true;
-				  try {
-				    if (Process(obj)) {
-				      stats.OK++;
-				    }
-				    else {
-				      stats.KO++;
-				    }
-				  }
-				  finally {
-  				  _working = false;
-				  }
-  			}
-   			else {
-     			if (!_stopped) {
-     				inQueue.wh.WaitOne(5000, false);
-     			}
-  			}
-			}
-		}
+    virtual public void Loop() {
+      while (!_stopped) {
+        T obj = inQueue.Remove();
+        if (obj != null) {
+          _working = true;
+          try {
+            if (Process(obj)) {
+              stats.OK++;
+            }
+            else {
+              stats.KO++;
+            }
+          }
+          finally {
+            _working = false;
+          }
+        }
+        else {
+          if (!_stopped) {
+            inQueue.wh.WaitOne(5000, false);
+          }
+        }
+      }
+    }
 
-		virtual public void Stop() {
-			_stopped = true;
-		}
+    virtual public void Stop() {
+      _stopped = true;
+    }
 
-		virtual public bool IsFinished() {
-		  return !_working;
-		}
+    virtual public bool IsFinished() {
+      return !_working;
+    }
 
-		virtual public WorkerStats Stats() {
-		  return stats;
-		}
-		
+    virtual public WorkerStats Stats() {
+      return stats;
+    }
+
     virtual public string GetName() {
       return FName;
     }
 
-	}
-	
+  }
+
 }

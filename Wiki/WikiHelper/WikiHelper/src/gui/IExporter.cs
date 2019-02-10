@@ -10,19 +10,15 @@
 #endregion Header
 
 namespace WikiHelper.gui {
-  using System;
-  using System.Drawing;
-  using System.Windows.Forms;
 
   using WikiHelper.lib.WikiMedia;
-  using WikiHelper.lib.WikiMedia.converter;
 
   public interface IExporter {
     #region Methods
     void Export(WikiMedia.ExportNotify notify);
     bool Setup();
     #endregion Methods
-    
+
   }
-  
+
 }

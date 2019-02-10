@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ProjectGuid>{28D5D293-2391-4744-85CC-0983D9624438}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -7,7 +7,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>WikiHelper</RootNamespace>
     <AssemblyName>WikiHelper</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <SourceAnalysisOverrideSettingsFile>C:\Documents and Settings\enrico\Dati applicazioni\ICSharpCode/SharpDevelop3.0\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
     <TargetFrameworkProfile />
@@ -42,10 +42,25 @@
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
     <FileAlignment>4096</FileAlignment>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
-    <Reference Include="Microsoft.Office.Interop.PowerPoint" />
-    <Reference Include="office, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.PowerPoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Office.Interop.PowerPoint.15.0.4420.1017\lib\net20\Microsoft.Office.Interop.PowerPoint.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="office, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
@@ -100,51 +115,77 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="src\extlib\ConfigEditor.cs" />
-    <Compile Include="src\extlib\CustomClass.cs" />
+    <Compile Include="src\extlib\ConfigEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="src\extlib\CustomClass.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="src\extlib\DifferenceEngine\BinaryFile.cs" />
     <Compile Include="src\extlib\DifferenceEngine\CharData.cs" />
     <Compile Include="src\extlib\DifferenceEngine\DiffList_String.cs" />
     <Compile Include="src\extlib\DifferenceEngine\Engine.cs" />
     <Compile Include="src\extlib\DifferenceEngine\Structures.cs" />
     <Compile Include="src\extlib\DifferenceEngine\TextFile.cs" />
-    <Compile Include="src\extlib\Diff\BinaryResults.cs" />
+    <Compile Include="src\extlib\Diff\BinaryResults.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="src\extlib\Diff\DiffTextFile.cs" />
-    <Compile Include="src\extlib\Diff\Main.cs" />
-    <Compile Include="src\extlib\Diff\Results.cs" />
+    <Compile Include="src\extlib\Diff\Main.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="src\extlib\Diff\Results.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="src\extlib\DotNetWikiBot.cs" />
     <Compile Include="src\extlib\HTML.cs" />
     <Compile Include="src\extlib\HTMLTest.cs" />
-    <Compile Include="src\gui\AddressBookExport.cs" />
+    <Compile Include="src\gui\AddressBookExport.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="src\gui\AddressBookExport.Designer.cs">
       <DependentUpon>AddressBookExport.cs</DependentUpon>
     </Compile>
-    <Compile Include="src\gui\CategoryExport.cs" />
+    <Compile Include="src\gui\CategoryExport.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="src\gui\CategoryExport.Designer.cs">
       <DependentUpon>CategoryExport.cs</DependentUpon>
     </Compile>
-    <Compile Include="src\gui\CreateForm.cs" />
+    <Compile Include="src\gui\CreateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="src\gui\CreateForm.Designer.cs">
       <DependentUpon>CreateForm.cs</DependentUpon>
     </Compile>
     <Compile Include="src\gui\IExporter.cs" />
-    <Compile Include="src\gui\MainForm.cs" />
+    <Compile Include="src\gui\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="src\gui\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="src\gui\PageExport.cs" />
+    <Compile Include="src\gui\PageExport.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="src\gui\PageExport.Designer.cs">
       <DependentUpon>PageExport.cs</DependentUpon>
     </Compile>
-    <Compile Include="src\gui\PageProcess.cs" />
+    <Compile Include="src\gui\PageProcess.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="src\gui\PageProcess.Designer.cs">
       <DependentUpon>PageProcess.cs</DependentUpon>
     </Compile>
-    <Compile Include="src\gui\ReplaceForm.cs" />
+    <Compile Include="src\gui\ReplaceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="src\gui\ReplaceForm.Designer.cs">
       <DependentUpon>ReplaceForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="src\gui\WikiLoginForm.cs" />
+    <Compile Include="src\gui\WikiLoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="src\gui\WikiLoginForm.Designer.cs">
       <DependentUpon>WikiLoginForm.cs</DependentUpon>
     </Compile>
@@ -182,21 +223,10 @@
     <None Include="conf\Template.pot">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="conf" />
-    <Folder Include="conf\data" />
-    <Folder Include="conf\extractors" />
-    <Folder Include="src" />
-    <Folder Include="src\extlib\Diff" />
-    <Folder Include="src\extlib\DifferenceEngine" />
-    <Folder Include="src\gui" />
-    <Folder Include="src\lib" />
-    <Folder Include="src\extlib" />
-    <Folder Include="src\lib\WikiMedia" />
-    <Folder Include="src\lib\WikiMedia\converter" />
-    <Folder Include="src\lib\WikiMedia\patch" />
-    <Folder Include="src\lib\WikiMedia\wikitext" />
+    <Folder Include="src\lib\WikiMedia\patch\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="WikiHelper.cd" />

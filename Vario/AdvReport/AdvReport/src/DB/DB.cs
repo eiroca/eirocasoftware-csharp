@@ -14,26 +14,24 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Common;
 using System.Data.OleDb;
 
 namespace Reporting {
-  
+
   public class DBHelper {
 
     Dictionary<string, OleDbConnection> connections = new Dictionary<string, OleDbConnection>();
 
     string connectionString = null;
-    
+
     public DBHelper() {
       connectionString =
-        "Provider=Microsoft.Jet.OLEDB.4.0;"+
+        "Provider=Microsoft.Jet.OLEDB.4.0;" +
         "Data Source=C:\\DB\\datamodel.mdb;";
     }
-    
+
     public OleDbConnection GetConnection(string section) {
       OleDbConnection connection;
       lock (connections) {
@@ -48,7 +46,7 @@ namespace Reporting {
       }
       return connection;
     }
-    
+
     public void Close() {
       lock (connections) {
         foreach (DbConnection c in connections.Values) {
@@ -59,5 +57,5 @@ namespace Reporting {
     }
 
   }
-  
+
 }
